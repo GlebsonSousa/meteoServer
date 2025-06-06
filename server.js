@@ -1,17 +1,18 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');  // IMPORTAÇÃO ESSENCIAL
 const app = express();
 
-app.use(cors())
+app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send({ mensagem: "Servidor meteorológico ativo!" });
+app.get('/', (req, res) => {
+  res.send({ mensagem: 'Servidor meteorológico ativo!' });
 });
 
-app.get("/tempo", (req, res) => {
+app.get('/tempo', (req, res) => {
   res.json({
-    cidade: "Rio de Janeiro",
+    cidade: 'Rio de Janeiro',
     temperatura: 28,
-    condição: "Parcialmente nublado"
+    condição: 'Parcialmente nublado'
   });
 });
 
