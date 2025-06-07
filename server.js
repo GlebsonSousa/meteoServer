@@ -1,3 +1,27 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+
+app.use(cors());
+
+// Rota principal
+app.get('/', (req, res) => {
+  res.send({ mensagem: 'Servidor meteorológico ativo!' });
+});
+
+// Rota de exemplo estático
+app.get('/tempo', (req, res) => {
+  res.json({
+    cidade: 'Rio de Janeiro',
+    temperatura: 28,
+    condição: 'Parcialmente nublado'
+  });
+});
+
+// Rota /chuva com busca por codigo_ibge, nome, ou lat/lon
 app.get('/chuva', (req, res) => {
   const { nome, lat, lon, codigo_ibge } = req.query;
 
@@ -24,7 +48,7 @@ app.get('/chuva', (req, res) => {
       continue;
     }
 
-    // 1º: Busca por código IBGE
+    // 1. Buscar por código IBGE
     if (codigo_ibge) {
       for (const cidade in dados) {
         if (String(dados[cidade].codigo_ibge) === String(codigo_ibge)) {
@@ -35,7 +59,7 @@ app.get('/chuva', (req, res) => {
       if (registro) break;
     }
 
-    // 2º: Busca por nome
+    // 2. Buscar por nome da cidade
     if (nome) {
       for (const cidade in dados) {
         if (cidade.toLowerCase() === nome.toLowerCase()) {
@@ -46,7 +70,7 @@ app.get('/chuva', (req, res) => {
       if (registro) break;
     }
 
-    // 3º: Busca por coordenadas
+    // 3. Buscar por latitude e longitude
     if (latitude !== null && longitude !== null) {
       for (const cidade in dados) {
         const item = dados[cidade];
@@ -58,16 +82,15 @@ app.get('/chuva', (req, res) => {
           break;
         }
       }
+      if (registro) break;
     }
-
-    if (registro) break;
   }
 
   if (!registro) {
     return res.status(404).json({ erro: 'Cidade não encontrada nos arquivos' });
   }
 
-  // Calcula média mensal
+  // Calcula média de chuva mensal
   const valores = Object.values(registro.dados);
   const soma = valores.reduce((acc, val) => acc + val, 0);
   const media = valores.length > 0 ? soma / valores.length : 0;
@@ -79,4 +102,10 @@ app.get('/chuva', (req, res) => {
     codigo_ibge: registro.codigo_ibge,
     media_chuva_mensal: media.toFixed(2)
   });
+});
+
+// Porta do servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
