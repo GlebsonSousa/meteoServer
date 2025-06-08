@@ -12,7 +12,6 @@ function logCidadeNaoEncontrada(nome, codigo_ibge) {
   const caminhoLog = path.join(__dirname, 'log_cidades.json');
   let logAtual = [];
 
-  // Tenta ler o arquivo de log atual, se existir
   try {
     if (fs.existsSync(caminhoLog)) {
       const conteudo = fs.readFileSync(caminhoLog, 'utf8');
@@ -20,10 +19,8 @@ function logCidadeNaoEncontrada(nome, codigo_ibge) {
     }
   } catch (erro) {
     console.error('Erro ao ler arquivo log_cidades.json:', erro);
-    // Continua com logAtual = []
   }
 
-  // Verifica se o registro já está no log para evitar duplicatas
   const jaRegistrado = logAtual.some(
     item =>
       (nome && item.nome && item.nome.toLowerCase() === nome.toLowerCase()) &&
@@ -38,6 +35,20 @@ function logCidadeNaoEncontrada(nome, codigo_ibge) {
       console.error('Erro ao escrever arquivo log_cidades.json:', erro);
     }
   }
+}
+
+// Função para calcular distância entre 2 coordenadas (Haversine)
+function haversine(lat1, lon1, lat2, lon2) {
+  const toRad = angle => (Math.PI / 180) * angle;
+  const R = 6371; // Raio da Terra em km
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+
+  return R * 2 * Math.asin(Math.sqrt(a));
 }
 
 // Rota principal
@@ -69,6 +80,7 @@ app.get('/chuva', (req, res) => {
 
   let registro = null;
 
+  // Tenta encontrar registro exato primeiro
   for (const nomeArquivo of arquivos) {
     const caminho = path.join(pastaDados, nomeArquivo);
     const conteudo = fs.readFileSync(caminho, 'utf8');
@@ -113,6 +125,40 @@ app.get('/chuva', (req, res) => {
         }
       }
       if (registro) break;
+    }
+  }
+
+  // Se não encontrou, busca a cidade mais próxima (se lat/lon fornecido)
+  if (!registro && latitude !== null && longitude !== null) {
+    let cidadeMaisProxima = null;
+    let menorDistancia = Infinity;
+
+    for (const nomeArquivo of arquivos) {
+      const caminho = path.join(pastaDados, nomeArquivo);
+      const conteudo = fs.readFileSync(caminho, 'utf8');
+
+      let dadosArquivo;
+      try {
+        dadosArquivo = JSON.parse(conteudo);
+      } catch (erro) {
+        continue;
+      }
+
+      for (const cidade in dadosArquivo) {
+        const item = dadosArquivo[cidade];
+        if (item.latitude == null || item.longitude == null) continue;
+
+        const dist = haversine(latitude, longitude, item.latitude, item.longitude);
+
+        if (dist < menorDistancia) {
+          menorDistancia = dist;
+          cidadeMaisProxima = { nome: cidade, ...item };
+        }
+      }
+    }
+
+    if (cidadeMaisProxima) {
+      registro = cidadeMaisProxima;
     }
   }
 
@@ -165,7 +211,6 @@ app.get('/chuva', (req, res) => {
     soma_chuva_mensal: somaChuvaPorMes
   });
 });
-
 
 // Porta do servidor
 const PORT = process.env.PORT || 3000;
