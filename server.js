@@ -4,100 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
+
 app.use(cors());
-
-const pastaDados = __dirname;
-const tolerancia = 0.0001;
-
-const mesesNomes = {
-  1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
-  5: "Mai", 6: "Jun", 7: "Jul", 8: "Ago",
-  9: "Set", 10: "Out", 11: "Nov", 12: "Dez"
-};
-
-// Função para carregar arquivos que começam com 'chuva_parte_'
-function carregarArquivosChuva() {
-  return fs.readdirSync(pastaDados)
-    .filter(arquivo => arquivo.startsWith('chuva_parte_') && arquivo.endsWith('.json'));
-}
-
-// Função para buscar cidade em arquivos por codigo_ibge, nome ou lat/lon
-function buscarCidade({ codigo_ibge, nome, latitude, longitude }) {
-  const arquivos = carregarArquivosChuva();
-  
-  for (const nomeArquivo of arquivos) {
-    const caminho = path.join(pastaDados, nomeArquivo);
-    const conteudo = fs.readFileSync(caminho, 'utf8');
-    let dadosArquivo;
-    try {
-      dadosArquivo = JSON.parse(conteudo);
-    } catch {
-      continue;
-    }
-
-    if (codigo_ibge) {
-      for (const cidade in dadosArquivo) {
-        if (String(dadosArquivo[cidade].codigo_ibge) === String(codigo_ibge)) {
-          return { nome: cidade, ...dadosArquivo[cidade] };
-        }
-      }
-    }
-
-    if (nome) {
-      for (const cidade in dadosArquivo) {
-        if (cidade.toLowerCase() === nome.toLowerCase()) {
-          return { nome: cidade, ...dadosArquivo[cidade] };
-        }
-      }
-    }
-
-    if (latitude !== null && longitude !== null) {
-      for (const cidade in dadosArquivo) {
-        const item = dadosArquivo[cidade];
-        if (
-          Math.abs(item.latitude - latitude) < tolerancia &&
-          Math.abs(item.longitude - longitude) < tolerancia
-        ) {
-          return { nome: cidade, ...item };
-        }
-      }
-    }
-  }
-
-  return null;
-}
-
-// Função que calcula média mensal de chuva
-function calcularMediaChuvaMensal(dadosDiarios) {
-  if (!dadosDiarios) return [];
-
-  const somaPorMes = {};
-  const contagemPorMes = {};
-
-  for (const data in dadosDiarios) {
-    const valor = Number(dadosDiarios[data]);
-    if (isNaN(valor)) continue;
-
-    const mesAno = data.slice(0, 7); // "YYYY-MM"
-
-    somaPorMes[mesAno] = (somaPorMes[mesAno] || 0) + valor;
-    contagemPorMes[mesAno] = (contagemPorMes[mesAno] || 0) + 1;
-  }
-
-  const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
-  const ultimos6Meses = mesesOrdenados.slice(0, 6).sort();
-
-  return ultimos6Meses.map(mesAno => {
-    const media = somaPorMes[mesAno] / contagemPorMes[mesAno];
-    const mesNum = Number(mesAno.slice(5, 7));
-    return {
-      mes: mesNum,
-      nome_mes: mesesNomes[mesNum] || mesAno,
-      ano_mes: mesAno,
-      media_mm: Number(media.toFixed(2))
-    };
-  });
-}
 
 // Rota principal
 app.get('/', (req, res) => {
@@ -113,19 +21,113 @@ app.get('/tempo', (req, res) => {
   });
 });
 
-// Rota /chuva (limpa)
+// Rota /chuva com busca por codigo_ibge, nome, ou lat/lon
 app.get('/chuva', (req, res) => {
   const { nome, lat, lon, codigo_ibge } = req.query;
+
   const latitude = lat ? parseFloat(lat) : null;
   const longitude = lon ? parseFloat(lon) : null;
+  const tolerancia = 0.0001;
 
-  const registro = buscarCidade({ codigo_ibge, nome, latitude, longitude });
+  const pastaDados = __dirname;
+  const arquivos = fs.readdirSync(pastaDados).filter(arquivo =>
+    arquivo.startsWith('chuva_parte_') && arquivo.endsWith('.json')
+  );
+
+  let registro = null;
+
+  for (const nomeArquivo of arquivos) {
+    const caminho = path.join(pastaDados, nomeArquivo);
+    const conteudo = fs.readFileSync(caminho, 'utf8');
+
+    let dadosArquivo;
+    try {
+      dadosArquivo = JSON.parse(conteudo);
+    } catch (erro) {
+      console.error(`Erro ao parsear ${nomeArquivo}:`, erro);
+      continue;
+    }
+
+    if (codigo_ibge) {
+      for (const cidade in dadosArquivo) {
+        if (String(dadosArquivo[cidade].codigo_ibge) === String(codigo_ibge)) {
+          registro = { nome: cidade, ...dadosArquivo[cidade] };
+          break;
+        }
+      }
+      if (registro) break;
+    }
+
+    if (nome) {
+      for (const cidade in dadosArquivo) {
+        if (cidade.toLowerCase() === nome.toLowerCase()) {
+          registro = { nome: cidade, ...dadosArquivo[cidade] };
+          break;
+        }
+      }
+      if (registro) break;
+    }
+
+    if (latitude !== null && longitude !== null) {
+      for (const cidade in dadosArquivo) {
+        const item = dadosArquivo[cidade];
+        if (
+          Math.abs(item.latitude - latitude) < tolerancia &&
+          Math.abs(item.longitude - longitude) < tolerancia
+        ) {
+          registro = { nome: cidade, ...item };
+          break;
+        }
+      }
+      if (registro) break;
+    }
+  }
 
   if (!registro) {
     return res.status(404).json({ erro: 'Cidade não encontrada nos arquivos' });
   }
 
-  const mediasPorMes = calcularMediaChuvaMensal(registro.dados);
+  const dadosDiarios = registro.dados;
+
+  // Acumula soma e contagem diária agrupando por mês (formato "YYYY-MM")
+  const somaPorMes = {};
+  const contagemPorMes = {};
+
+  for (const data in dadosDiarios) {
+    const valor = Number(dadosDiarios[data]);
+    if (isNaN(valor)) continue;
+
+    const mesAno = data.slice(0, 7); // "YYYY-MM"
+
+    somaPorMes[mesAno] = (somaPorMes[mesAno] || 0) + valor;
+    contagemPorMes[mesAno] = (contagemPorMes[mesAno] || 0) + 1;
+  }
+
+  // Ordena meses do mais recente para o mais antigo
+  const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
+
+  // Pega os últimos 6 meses e ordena cronologicamente (ascendente)
+  const ultimos6Meses = mesesOrdenados.slice(0, 6).sort();
+
+  // Mapeia número do mês para nome abreviado
+  const meses = {
+    1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
+    5: "Mai", 6: "Jun", 7: "Jul", 8: "Ago",
+    9: "Set", 10: "Out", 11: "Nov", 12: "Dez"
+  };
+
+  // Monta array de médias mensais com nome do mês e valor em mm
+  const mediasPorMes = ultimos6Meses.map(mesAno => {
+    const media = somaPorMes[mesAno] / contagemPorMes[mesAno];
+    const mesNum = Number(mesAno.slice(5, 7));
+
+    return {
+      mes: mesNum,
+      nome_mes: meses[mesNum] || mesAno,
+      ano_mes: mesAno,
+      media_mm: Number(media.toFixed(2))
+    };
+  });
 
   return res.json({
     cidade: registro.nome,
