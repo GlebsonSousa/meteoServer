@@ -117,7 +117,6 @@ app.get('/chuva', (req, res) => {
   }
 
   if (!registro) {
-    // Chama a função de log aqui
     logCidadeNaoEncontrada(nome, codigo_ibge);
     return res.status(404).json({ erro: 'Cidade não encontrada nos arquivos' });
   }
@@ -138,8 +137,7 @@ app.get('/chuva', (req, res) => {
   }
 
   const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
-
-  const ultimos6Meses = mesesOrdenados.slice(0, 12).sort();
+  const ultimos12Meses = mesesOrdenados.slice(0, 12).sort();
 
   const meses = {
     1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
@@ -147,7 +145,7 @@ app.get('/chuva', (req, res) => {
     9: "Set", 10: "Out", 11: "Nov", 12: "Dez"
   };
 
-  const somaChuvaPorMes = ultimos6Meses.map(mesAno => {
+  const somaChuvaPorMes = ultimos12Meses.map(mesAno => {
     const soma = somaPorMes[mesAno];
     const mesNum = Number(mesAno.slice(5, 7));
 
@@ -159,15 +157,15 @@ app.get('/chuva', (req, res) => {
     };
   });
 
-
   return res.json({
     cidade: registro.nome,
     latitude: registro.latitude,
     longitude: registro.longitude,
     codigo_ibge: registro.codigo_ibge,
-    media_chuva_mensal: mediasPorMes
+    soma_chuva_mensal: somaChuvaPorMes
   });
 });
+
 
 // Porta do servidor
 const PORT = process.env.PORT || 3000;
