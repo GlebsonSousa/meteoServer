@@ -139,7 +139,7 @@ app.get('/chuva', (req, res) => {
 
   const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
 
-  const ultimos6Meses = mesesOrdenados.slice(0, 6).sort();
+  const ultimos6Meses = mesesOrdenados.slice(0, 12).sort();
 
   const meses = {
     1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
@@ -147,17 +147,18 @@ app.get('/chuva', (req, res) => {
     9: "Set", 10: "Out", 11: "Nov", 12: "Dez"
   };
 
-  const mediasPorMes = ultimos6Meses.map(mesAno => {
-    const media = somaPorMes[mesAno] / contagemPorMes[mesAno];
+  const somaChuvaPorMes = ultimos6Meses.map(mesAno => {
+    const soma = somaPorMes[mesAno];
     const mesNum = Number(mesAno.slice(5, 7));
 
     return {
       mes: mesNum,
       nome_mes: meses[mesNum] || mesAno,
       ano_mes: mesAno,
-      media_mm: Number(media.toFixed(2))
+      soma_mm: Number(soma.toFixed(2))
     };
   });
+
 
   return res.json({
     cidade: registro.nome,
