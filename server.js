@@ -4,8 +4,16 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-
 app.use(cors());
+
+// ✅ Carrega base de solo
+const soloInfoPath = path.join(__dirname, 'solo_info.json');
+let soloInfo = {};
+try {
+  soloInfo = JSON.parse(fs.readFileSync(soloInfoPath, 'utf8'));
+} catch (e) {
+  console.error('Erro ao carregar solo_info.json:', e);
+}
 
 // Função para logar cidades não encontradas
 function logCidadeNaoEncontrada(nome, codigo_ibge) {
@@ -56,7 +64,7 @@ app.get('/', (req, res) => {
   res.send({ mensagem: 'Servidor meteorológico ativo!' });
 });
 
-// Rota de exemplo estático
+// Rota estática
 app.get('/tempo', (req, res) => {
   res.json({
     cidade: 'Rio de Janeiro',
@@ -65,7 +73,7 @@ app.get('/tempo', (req, res) => {
   });
 });
 
-// Rota /chuva com busca por codigo_ibge, nome, ou lat/lon
+// Rota /chuva com solo integrado
 app.get('/chuva', (req, res) => {
   const { nome, lat, lon, codigo_ibge } = req.query;
 
@@ -80,7 +88,6 @@ app.get('/chuva', (req, res) => {
 
   let registro = null;
 
-  // Tenta encontrar registro exato primeiro
   for (const nomeArquivo of arquivos) {
     const caminho = path.join(pastaDados, nomeArquivo);
     const conteudo = fs.readFileSync(caminho, 'utf8');
@@ -128,7 +135,6 @@ app.get('/chuva', (req, res) => {
     }
   }
 
-  // Se não encontrou, busca a cidade mais próxima (se lat/lon fornecido)
   if (!registro && latitude !== null && longitude !== null) {
     let cidadeMaisProxima = null;
     let menorDistancia = Infinity;
@@ -203,15 +209,19 @@ app.get('/chuva', (req, res) => {
     };
   });
 
+  // ✅ Adiciona os dados de solo do estado
+  const dadosSolo = soloInfo[registro.estado] || null;
+
   return res.json({
     cidade: registro.nome,
     latitude: registro.latitude,
     longitude: registro.longitude,
     codigo_ibge: registro.codigo_ibge,
-    soma_chuva_mensal: somaChuvaPorMes
+    estado: registro.estado,
+    soma_chuva_mensal: somaChuvaPorMes,
+    solo: dadosSolo
   });
 });
-
 
 // Porta do servidor
 const PORT = process.env.PORT || 3000;

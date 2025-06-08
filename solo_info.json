@@ -1,0 +1,326 @@
+{
+  "AC": {
+    "nome": "Acre",
+    "regiao": "Norte",
+    "clima": "Equatorial quente e úmido com chuvas abundantes",
+    "tipo_solo": "Latossolos amarelos e Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa a moderada",
+      "pH": 4.5,
+      "fertilidade": "baixa"
+    }
+  },
+  "AL": {
+    "nome": "Alagoas",
+    "regiao": "Nordeste",
+    "clima": "Tropical quente, com períodos de seca",
+    "tipo_solo": "Latossolos, Neossolos e Cambissolos",
+    "caracteristicas_solo": {
+      "textura": "média a arenosa",
+      "drenagem": "moderada a ruim",
+      "pH": 5.5,
+      "fertilidade": "média a baixa"
+    }
+  },
+  "AP": {
+    "nome": "Amapá",
+    "regiao": "Norte",
+    "clima": "Equatorial quente e úmido",
+    "tipo_solo": "Latossolos e Argissolos",
+    "caracteristicas_solo": {
+      "textura": "argilosa a média",
+      "drenagem": "boa",
+      "pH": 4.7,
+      "fertilidade": "baixa"
+    }
+  },
+  "AM": {
+    "nome": "Amazonas",
+    "regiao": "Norte",
+    "clima": "Equatorial quente e úmido",
+    "tipo_solo": "Latossolos e Neossolos",
+    "caracteristicas_solo": {
+      "textura": "argilosa a média",
+      "drenagem": "boa",
+      "pH": 4.5,
+      "fertilidade": "baixa"
+    }
+  },
+  "BA": {
+    "nome": "Bahia",
+    "regiao": "Nordeste",
+    "clima": "Tropical semiárido e tropical úmido",
+    "tipo_solo": "Latossolos, Cambissolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "média a arenosa",
+      "drenagem": "moderada a ruim",
+      "pH": 5.5,
+      "fertilidade": "média"
+    }
+  },
+  "CE": {
+    "nome": "Ceará",
+    "regiao": "Nordeste",
+    "clima": "Semiárido quente com longos períodos de seca",
+    "tipo_solo": "Neossolos Quartzarênicos, Latossolos",
+    "caracteristicas_solo": {
+      "textura": "arenosa",
+      "drenagem": "ruim",
+      "pH": 5.3,
+      "fertilidade": "baixa"
+    }
+  },
+  "DF": {
+    "nome": "Distrito Federal",
+    "regiao": "Centro-Oeste",
+    "clima": "Tropical com estação seca bem definida",
+    "tipo_solo": "Latossolos, Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média"
+    }
+  },
+  "ES": {
+    "nome": "Espírito Santo",
+    "regiao": "Sudeste",
+    "clima": "Tropical quente com estação seca",
+    "tipo_solo": "Latossolos, Cambissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.5,
+      "fertilidade": "alta"
+    }
+  },
+  "GO": {
+    "nome": "Goiás",
+    "regiao": "Centro-Oeste",
+    "clima": "Tropical com estação seca bem definida",
+    "tipo_solo": "Latossolos, Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média"
+    }
+  },
+  "MA": {
+    "nome": "Maranhão",
+    "regiao": "Nordeste",
+    "clima": "Tropical quente com estação seca",
+    "tipo_solo": "Latossolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "média",
+      "drenagem": "boa",
+      "pH": 5.4,
+      "fertilidade": "média"
+    }
+  },
+  "MT": {
+    "nome": "Mato Grosso",
+    "regiao": "Centro-Oeste",
+    "clima": "Tropical com estação seca bem definida",
+    "tipo_solo": "Latossolos, Argissolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média"
+    }
+  },
+  "MS": {
+    "nome": "Mato Grosso do Sul",
+    "regiao": "Centro-Oeste",
+    "clima": "Tropical com estação seca",
+    "tipo_solo": "Latossolos, Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média"
+    }
+  },
+  "MG": {
+    "nome": "Minas Gerais",
+    "regiao": "Sudeste",
+    "clima": "Tropical e subtropical",
+    "tipo_solo": "Latossolos, Nitossolos, Cambissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.5,
+      "fertilidade": "alta"
+    }
+  },
+  "PA": {
+    "nome": "Pará",
+    "regiao": "Norte",
+    "clima": "Equatorial quente e úmido",
+    "tipo_solo": "Latossolos e Argissolos",
+    "caracteristicas_solo": {
+      "textura": "argilosa a média",
+      "drenagem": "boa",
+      "pH": 4.6,
+      "fertilidade": "baixa"
+    }
+  },
+  "PB": {
+    "nome": "Paraíba",
+    "regiao": "Nordeste",
+    "clima": "Semiárido quente com seca",
+    "tipo_solo": "Latossolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "arenosa a média",
+      "drenagem": "moderada",
+      "pH": 5.3,
+      "fertilidade": "baixa a média"
+    }
+  },
+  "PE": {
+    "nome": "Pernambuco",
+    "regiao": "Nordeste",
+    "clima": "Tropical quente com seca e chuvas",
+    "tipo_solo": "Latossolos, Neossolos, Cambissolos",
+    "caracteristicas_solo": {
+      "textura": "média",
+      "drenagem": "moderada",
+      "pH": 5.4,
+      "fertilidade": "média"
+    }
+  },
+  "PI": {
+    "nome": "Piauí",
+    "regiao": "Nordeste",
+    "clima": "Semiárido quente com longos períodos de seca",
+    "tipo_solo": "Neossolos, Latossolos",
+    "caracteristicas_solo": {
+      "textura": "arenosa a média",
+      "drenagem": "moderada",
+      "pH": 5.3,
+      "fertilidade": "baixa"
+    }
+  },
+  "PR": {
+    "nome": "Paraná",
+    "regiao": "Sul",
+    "clima": "Subtropical com verões quentes e invernos frios",
+    "tipo_solo": "Latossolos, Argissolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "argilosa a média",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média a alta"
+    }
+  },
+  "RJ": {
+    "nome": "Rio de Janeiro",
+    "regiao": "Sudeste",
+    "clima": "Tropical quente com estação seca",
+    "tipo_solo": "Latossolos, Cambissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.5,
+      "fertilidade": "alta"
+    }
+  },
+  "RN": {
+    "nome": "Rio Grande do Norte",
+    "regiao": "Nordeste",
+    "clima": "Semiárido quente",
+    "tipo_solo": "Neossolos, Latossolos",
+    "caracteristicas_solo": {
+      "textura": "arenosa",
+      "drenagem": "ruim a moderada",
+      "pH": 5.3,
+      "fertilidade": "baixa"
+    }
+  },
+  "RS": {
+    "nome": "Rio Grande do Sul",
+    "regiao": "Sul",
+    "clima": "Subtropical com verões quentes e invernos frios",
+    "tipo_solo": "Latossolos, Argissolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "argilosa a média",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média a alta"
+    }
+  },
+  "RO": {
+    "nome": "Rondônia",
+    "regiao": "Norte",
+    "clima": "Equatorial quente e úmido",
+    "tipo_solo": "Latossolos e Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 4.5,
+      "fertilidade": "baixa"
+    }
+  },
+  "RR": {
+    "nome": "Roraima",
+    "regiao": "Norte",
+    "clima": "Equatorial quente e úmido",
+    "tipo_solo": "Latossolos e Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 4.5,
+      "fertilidade": "baixa"
+    }
+  },
+  "SC": {
+    "nome": "Santa Catarina",
+    "regiao": "Sul",
+    "clima": "Subtropical com verões quentes e invernos frios",
+    "tipo_solo": "Latossolos, Argissolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "argilosa a média",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média a alta"
+    }
+  },
+  "SP": {
+    "nome": "São Paulo",
+    "regiao": "Sudeste",
+    "clima": "Tropical e subtropical",
+    "tipo_solo": "Latossolos, Nitossolos, Cambissolos",
+    "caracteristicas_solo": {
+      "textura": "média a argilosa",
+      "drenagem": "boa",
+      "pH": 5.5,
+      "fertilidade": "alta"
+    }
+  },
+  "SE": {
+    "nome": "Sergipe",
+    "regiao": "Nordeste",
+    "clima": "Tropical quente com períodos de seca",
+    "tipo_solo": "Latossolos, Neossolos",
+    "caracteristicas_solo": {
+      "textura": "média",
+      "drenagem": "moderada",
+      "pH": 5.5,
+      "fertilidade": "média"
+    }
+  },
+  "TO": {
+    "nome": "Tocantins",
+    "regiao": "Norte",
+    "clima": "Tropical quente com estação seca",
+    "tipo_solo": "Latossolos, Argissolos",
+    "caracteristicas_solo": {
+      "textura": "média",
+      "drenagem": "boa",
+      "pH": 5.8,
+      "fertilidade": "média"
+    }
+  }
+}
