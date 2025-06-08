@@ -7,6 +7,39 @@ const app = express();
 
 app.use(cors());
 
+// Função para logar cidades não encontradas
+function logCidadeNaoEncontrada(nome, codigo_ibge) {
+  const caminhoLog = path.join(__dirname, 'log_cidades.json');
+  let logAtual = [];
+
+  // Tenta ler o arquivo de log atual, se existir
+  try {
+    if (fs.existsSync(caminhoLog)) {
+      const conteudo = fs.readFileSync(caminhoLog, 'utf8');
+      logAtual = JSON.parse(conteudo);
+    }
+  } catch (erro) {
+    console.error('Erro ao ler arquivo log_cidades.json:', erro);
+    // Continua com logAtual = []
+  }
+
+  // Verifica se o registro já está no log para evitar duplicatas
+  const jaRegistrado = logAtual.some(
+    item =>
+      (nome && item.nome && item.nome.toLowerCase() === nome.toLowerCase()) &&
+      (codigo_ibge && item.codigo_ibge === codigo_ibge)
+  );
+
+  if (!jaRegistrado) {
+    logAtual.push({ nome: nome || null, codigo_ibge: codigo_ibge || null, data: new Date().toISOString() });
+    try {
+      fs.writeFileSync(caminhoLog, JSON.stringify(logAtual, null, 2), 'utf8');
+    } catch (erro) {
+      console.error('Erro ao escrever arquivo log_cidades.json:', erro);
+    }
+  }
+}
+
 // Rota principal
 app.get('/', (req, res) => {
   res.send({ mensagem: 'Servidor meteorológico ativo!' });
@@ -84,12 +117,13 @@ app.get('/chuva', (req, res) => {
   }
 
   if (!registro) {
+    // Chama a função de log aqui
+    logCidadeNaoEncontrada(nome, codigo_ibge);
     return res.status(404).json({ erro: 'Cidade não encontrada nos arquivos' });
   }
 
   const dadosDiarios = registro.dados;
 
-  // Acumula soma e contagem diária agrupando por mês (formato "YYYY-MM")
   const somaPorMes = {};
   const contagemPorMes = {};
 
@@ -97,26 +131,22 @@ app.get('/chuva', (req, res) => {
     const valor = Number(dadosDiarios[data]);
     if (isNaN(valor)) continue;
 
-    const mesAno = data.slice(0, 7); // "YYYY-MM"
+    const mesAno = data.slice(0, 7);
 
     somaPorMes[mesAno] = (somaPorMes[mesAno] || 0) + valor;
     contagemPorMes[mesAno] = (contagemPorMes[mesAno] || 0) + 1;
   }
 
-  // Ordena meses do mais recente para o mais antigo
   const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
 
-  // Pega os últimos 6 meses e ordena cronologicamente (ascendente)
   const ultimos6Meses = mesesOrdenados.slice(0, 6).sort();
 
-  // Mapeia número do mês para nome abreviado
   const meses = {
     1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
     5: "Mai", 6: "Jun", 7: "Jul", 8: "Ago",
     9: "Set", 10: "Out", 11: "Nov", 12: "Dez"
   };
 
-  // Monta array de médias mensais com nome do mês e valor em mm
   const mediasPorMes = ultimos6Meses.map(mesAno => {
     const media = somaPorMes[mesAno] / contagemPorMes[mesAno];
     const mesNum = Number(mesAno.slice(5, 7));
