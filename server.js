@@ -73,6 +73,17 @@ app.get('/tempo', (req, res) => {
   });
 });
 
+app.get('/estupefato', (req, res) => {
+  res.json({
+    cidade: 69,
+    temperatura: "Outro gato",
+    condição: 'Aquele que tem dição.',
+    pão: "sevenboys",
+    ano: 1800
+  });
+});
+
+
 // Rota /chuva com solo integrado
 app.get('/chuva', (req, res) => {
   const { nome, lat, lon, codigo_ibge } = req.query;
