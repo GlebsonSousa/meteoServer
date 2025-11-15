@@ -109,15 +109,15 @@ try {
 // 3. Carrega o dicionário de PROPRIEDADES de solo
 let propriedadesSolos = {};
 try {
-    const propriedadesPath = path.join(__dirname, 'propriedades_solos.json');
-    if (fs.existsSync(propriedadesPath)) {
-        propriedadesSolos = JSON.parse(fs.readFileSync(propriedadesPath, 'utf8'));
-        console.log("SUCESSO: 'propriedades_solos.json' (dicionário) carregado.");
-    } else {
-        console.warn('AVISO: Não foi possível carregar o dicionário propriedades_solos.json.');
-    }
+    const propriedadesPath = path.join(__dirname, 'propriedades_solos.json');
+    if (fs.existsSync(propriedadesPath)) {
+        propriedadesSolos = JSON.parse(fs.readFileSync(propriedadesPath, 'utf8'));
+        console.log("SUCESSO: 'propriedades_solos.json' (dicionário) carregado.");
+    } else {
+        console.warn('AVISO: Não foi possível carregar o dicionário propriedades_solos.json.');
+    }
 } catch (e) {
-    console.warn('AVISO: Erro ao carregar propriedades_solos.json.', e);
+    console.warn('AVISO: Erro ao carregar propriedades_solos.json.', e);
 }
 
 // --- Rota /solo ---
@@ -379,9 +379,6 @@ app.get('/chuva', (req, res) => {
     };
   });
 
-  // ✅ Adiciona os dados de solo do estado
-  const dadosSolo = soloInfo[registro.estado] || null;
-
   return res.json({
     cidade: registro.nome,
     latitude: registro.latitude,
@@ -389,7 +386,6 @@ app.get('/chuva', (req, res) => {
     codigo_ibge: registro.codigo_ibge,
     estado: registro.estado,
     soma_chuva_mensal: somaChuvaPorMes,
-    solo: dadosSolo
   });
 });
 

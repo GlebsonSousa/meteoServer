@@ -1,0 +1,77 @@
+{
+  "Neossolo litólico Distrófico": {
+    "drenagem": "Acentuada a Excessiva",
+    "ph": 4.5,
+    "fertilidade": "Baixa"
+  },
+  "Neossolo quartzarênico Hidromórfico": {
+    "drenagem": "Imperfeita a Moderada",
+    "ph": 5.3,
+    "fertilidade": "Muito Baixa"
+  },
+  "Nitossolo vermelho Eutrófico": {
+    "drenagem": "Boa",
+    "ph": 6.2,
+    "fertilidade": "Alta"
+  },
+  "Gleissolo sálico Sódido": {
+    "drenagem": "Muito Ruim (Encharcado)",
+    "ph": 8.5,
+    "fertilidade": "Alta (Sódio)"
+  },
+  "Gleissolo háplico Argila de atividade alta Distrófico": {
+    "drenagem": "Ruim ou Muito Ruim",
+    "ph": 5.0,
+    "fertilidade": "Baixa"
+  },
+  "Gleissolo háplico Argila de atividade baixa Distrófico": {
+    "drenagem": "Ruim ou Muito Ruim",
+    "ph": 5.2,
+    "fertilidade": "Baixa"
+  },
+  "Latossolo amarelo Distrófico": {
+    "drenagem": "Boa / Bem Drenado",
+    "ph": 4.5,
+    "fertilidade": "Muito Baixa"
+  },
+  "Latossolo vermelho-amarelo Distrófico": {
+    "drenagem": "Boa / Bem Drenado",
+    "ph": 4.6,
+    "fertilidade": "Baixa"
+  },
+  "Argilossolo vermelho-amarelo Distrófico": {
+    "drenagem": "Moderada",
+    "ph": 5.0,
+    "fertilidade": "Baixa"
+  },
+  "Plintossolo háplico Distrófico": {
+    "drenagem": "Deficiente / Imperfeita",
+    "ph": 4.8,
+    "fertilidade": "Baixa"
+  },
+  "Planossolo hidromórfico Eutrófico": {
+    "drenagem": "Imperfeita / Ruim",
+    "ph": 5.6,
+    "fertilidade": "Moderada a Alta"
+  },
+  "Massa Dagua Continental": {
+    "drenagem": "Água",
+    "ph": null,
+    "fertilidade": "N/A"
+  },
+  "Massa Dagua Costeira - Mar Territorial, 12 milhas": {
+    "drenagem": "Água",
+    "ph": null,
+    "fertilidade": "N/A"
+  },
+  "Massa Dagua Costeira - Zona Contigua, 24 milhas": {
+    "drenagem": "Água",
+    "ph": null,
+    "fertilidade": "N/A"
+  },
+  "Massa Dagua Costeira - Zona Econômica Exclusiva, 200 milhas": {
+    "drenagem": "Água",
+    "ph": null,
+    "fertilidade": "N/A"
+  }
+}
