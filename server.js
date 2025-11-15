@@ -59,6 +59,135 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.asin(Math.sqrt(a));
 }
 
+
+// --- INÍCIO DA INTEGRAÇÃO DO MAPA DE SOLOS DETALHADO ---
+
+const turf = require('@turf/turf'); // <-- 1. CERTIFIQUE-SE QUE ADICIONA ISTO NO TOPO
+
+// --- [NOVO] Carregamento do Mapa de Solos Detalhado ---
+
+// 2. Carrega o mapa de solos (arquivo grande) UMA VEZ na inicialização
+let geoJsonSolos;
+let geoJsonSolosCentroids; // <-- VARIÁVEL NOVA
+
+try {
+    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json');
+    if (fs.existsSync(soloGeoJsonPath)) {
+        const soloData = fs.readFileSync(soloGeoJsonPath, 'utf8');
+        geoJsonSolos = JSON.parse(soloData);
+        console.log("SUCESSO: Mapa de solos 'Solos_5000.json' carregado.");
+        // --- ADIÇÃO: Pré-calcula os centroides dos polígonos ---
+        console.log("Calculando centroides dos polígonos de solo...");
+        const centroids = geoJsonSolos.features.map(feature => {
+            // Evita erros se a geometria for inválida
+            if (!feature.geometry || !feature.geometry.coordinates || feature.geometry.coordinates.length === 0) {
+                return null;
+            }
+            try {
+                const centro = turf.centroid(feature.geometry);
+                // Copia as propriedades (tipo de solo, etc.) do polígono para o seu ponto central
+                centro.properties = feature.properties;
+                return centro;
+            } catch (centroidError) {
+                console.warn("Aviso: Falha ao calcular centroide de um polígono.", centroidError.message);
+                return null;
+            }
+        }).filter(Boolean); // Filtra os nulos/inválidos
+        
+        // Armazena a coleção de *pontos* (centroides) para busca rápida
+        geoJsonSolosCentroids = turf.featureCollection(centroids);
+        console.log(`SUCESSO: ${geoJsonSolosCentroids.features.length} centroides de solo calculados e prontos.`);
+        // 
+
+    } else {
+        console.warn("AVISO: Arquivo 'solos_brasil.geojson' não encontrado. A rota /solo não funcionará.");
+    }
+} catch (e) {
+    console.error('ERRO FATAL AO CARREGAR GeoJSON de solos:', e);
+}
+
+
+// --- [NOVA ROTA] Rota /solo ---
+
+// --- [NOVA ROTA] Rota /solo ---
+
+app.get('/solo', (req, res) => {
+    // 3. Valide se o arquivo de solos foi carregado
+    if (!geoJsonSolos || !geoJsonSolosCentroids) { // <-- Verifique as duas variáveis
+        return res.status(503).json({ 
+            erro: 'Serviço de solos indisponível (arquivo de dados não carregado).' 
+        });
+    }
+
+    // 4. Obtenha e valide as coordenadas da query
+    const { lat, lon } = req.query;
+    if (!lat || !lon) {
+        return res.status(400).json({ erro: 'Parâmetros "lat" e "lon" são obrigatórios.' });
+    }
+
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lon);
+
+    if (isNaN(latitude) || isNaN(longitude)) {
+        return res.status(400).json({ erro: 'Valores de "lat" e "lon" inválidos.' });
+    }
+
+    // 5. Crie o "ponto" de busca do Turf
+    const pontoClicado = turf.point([longitude, latitude]);
+    
+    let soloEncontrado = null;
+    let metodoDeBusca = "Não encontrado";
+
+    // 6. TENTATIVA 1: Faça a busca "Ponto em Polígono"
+    for (const feature of geoJsonSolos.features) {
+        try {
+            if (turf.booleanPointInPolygon(pontoClicado, feature.geometry)) {
+                soloEncontrado = feature.properties; // Salva as propriedades
+                metodoDeBusca = "Busca Exata (Ponto em Polígono)";
+                break; // Encontrou! Para o loop.
+            }
+        } catch(e) {
+            // Ignora polígonos com geometria inválida
+        }
+    }
+
+    // 7. TENTATIVA 2: Se não encontrou, busque o ponto mais próximo
+    if (!soloEncontrado) {
+        console.log("Aviso: Ponto fora dos polígonos. Buscando o centroide mais próximo...");
+        // 
+        // Usa os centroides pré-calculados para uma busca RÁPIDA
+        const pontoMaisProximo = turf.nearestPoint(pontoClicado, geoJsonSolosCentroids);
+        
+        if (pontoMaisProximo) {
+            soloEncontrado = pontoMaisProximo.properties; // Pega as propriedades do centroide
+            metodoDeBusca = "Busca por Proximidade (Centroide)";
+        }
+    }
+
+    // 8. Envie a resposta
+    if (soloEncontrado) {
+        // Envia os dados de solo encontrados
+        return res.json({
+            tipo_solo: soloEncontrado.DSC_COMPON,
+            textura: soloEncontrado.DSC_TEXTUR,
+            associacao_1: soloEncontrado.DSC_COMPO1,
+            associacao_2: soloEncontrado.DSC_COMPO2,
+            fonte: 'Mapa Pedológico (GeoJSON)',
+            codigo_legenda: soloEncontrado.COD_LEGEND,
+            _metodo_de_busca: metodoDeBusca // (Bom para debug no front-end)
+        });
+    } else {
+        // Se nem a busca exata nem a próxima funcionarem
+        return res.status(404).json({ erro: 'Nenhum dado de solo encontrado para esta coordenada.' });
+    }
+});
+
+// --- [O RESTO DO SEU CÓDIGO (ex: app.get('/chuva', ...), app.listen(...)) VEM DEPOIS] ---
+
+
+
+
+
 // Rota principal
 app.get('/', (req, res) => {
   res.send({ mensagem: 'Servidor meteorológico ativo!' });
