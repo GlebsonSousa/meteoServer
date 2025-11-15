@@ -100,16 +100,27 @@ try {
         // 
 
     } else {
-        console.warn("AVISO: Arquivo 'solos_brasil.geojson' não encontrado. A rota /solo não funcionará.");
+        console.warn("AVISO: Arquivo 'Solos_5000.json' não encontrado. A rota /solo não funcionará.");
     }
 } catch (e) {
     console.error('ERRO FATAL AO CARREGAR GeoJSON de solos:', e);
 }
 
+// 3. Carrega o dicionário de PROPRIEDADES de solo
+let propriedadesSolos = {};
+try {
+    const propriedadesPath = path.join(__dirname, 'propriedades_solos.json');
+    if (fs.existsSync(propriedadesPath)) {
+        propriedadesSolos = JSON.parse(fs.readFileSync(propriedadesPath, 'utf8'));
+        console.log("SUCESSO: 'propriedades_solos.json' (dicionário) carregado.");
+    } else {
+        console.warn('AVISO: Não foi possível carregar o dicionário propriedades_solos.json.');
+    }
+} catch (e) {
+    console.warn('AVISO: Erro ao carregar propriedades_solos.json.', e);
+}
 
-// --- [NOVA ROTA] Rota /solo ---
-
-// --- [NOVA ROTA] Rota /solo ---
+// --- Rota /solo ---
 
 app.get('/solo', (req, res) => {
     // 3. Valide se o arquivo de solos foi carregado
@@ -167,18 +178,36 @@ app.get('/solo', (req, res) => {
 
     // 8. Envie a resposta
     if (soloEncontrado) {
-        // Envia os dados de solo encontrados
-        return res.json({
-            tipo_solo: soloEncontrado.DSC_COMPON,
-            textura: soloEncontrado.DSC_TEXTUR,
-            associacao_1: soloEncontrado.DSC_COMPO1,
-            associacao_2: soloEncontrado.DSC_COMPO2,
-            fonte: 'Mapa Pedológico (GeoJSON)',
-            codigo_legenda: soloEncontrado.COD_LEGEND,
-            _metodo_de_busca: metodoDeBusca // (Bom para debug no front-end)
-        });
+        
+        // --- INÍCIO DA LÓGICA DE JUNÇÃO ---
+        // Pega o nome do solo (ex: "Latossolo amarelo Distrófico")
+        const tipoSoloNome = soloEncontrado.DSC_COMPON; 
+        
+        // Busca esse nome no dicionário (propriedadesSolos) que carregamos
+        // 
+        const propriedades = propriedadesSolos[tipoSoloNome] || {}; 
+        
+        // Junta os dados do GeoJSON com os dados do dicionário
+        const dadosCompletos = {
+            tipo_solo: tipoSoloNome,
+            textura: soloEncontrado.DSC_TEXTUR || "-",
+            associacao_1: soloEncontrado.DSC_COMPO1 || "-",
+            associacao_2: soloEncontrado.DSC_COMPO2 || "-",
+            fonte: 'Mapa Pedológico (GeoJSON)',
+            
+            // Dados "Enriquecidos" do arquivo propriedades_solos.json
+            drenagem: propriedades.drenagem || "-",
+            ph: propriedades.ph || "-",
+            fertilidade: propriedades.fertilidade || "-",
+
+            _metodo_de_busca: metodoDeBusca
+        };
+
+        return res.json(dadosCompletos);
+        // --- FIM DA LÓGICA DE JUNÇÃO ---
+        
     } else {
-        // Se nem a busca exata nem a próxima funcionarem
+        // Se nem a busca exata nem a próxima funcionarem
         return res.status(404).json({ erro: 'Nenhum dado de solo encontrado para esta coordenada.' });
     }
 });
