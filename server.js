@@ -113,6 +113,7 @@ try {
 
 app.get('/solo', (req, res) => {
     // 3. Valide se o arquivo de solos foi carregado
+    console.log("Verificando disponibilidade dos dados de solos...");
     if (!geoJsonSolos || !geoJsonSolosCentroids) { // <-- Verifique as duas variáveis
         return res.status(503).json({ 
             erro: 'Serviço de solos indisponível (arquivo de dados não carregado).' 
