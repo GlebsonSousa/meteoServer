@@ -264,7 +264,7 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) {
     soma_chuva_mensal: somaChuvaPorMes,
     chuva_total_anual_mm: chuvaTotalAnual,
     solo: dadosSolo // Retorna o solo simples, como o front-end antigo espera
-  };
+  };
 }
 
 // --- Fim das Funções Auxiliares ---
@@ -446,16 +446,18 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
     }
 
     // Ordenar do melhor (maior score) para o pior
-    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 3);
+    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 4);
     
-    console.log("Top 3:", topRecomendacoes);
+    console.log("Top 4:", topRecomendacoes);
 
     // 7. Envie a Resposta Completa
-    return res.json({
-        solo_local: dadosLocaisSolo,    // Dados do seu GeoJSON + Dicionário
-        solo_preciso: dadosPrecisos,   // Novos dados da API ISRIC
-        chuva: dadosChuva.erro ? { erro: dadosChuva.erro } : dadosChuva, // Dados de chuva (que agora contém o 'solo' simples)
-        recomendacoes: topRecomendacoes // Top 3 culturas
+    return res.json({
+        solo_local: dadosLocaisSolo,    
+        solo_preciso: dadosPrecisos,   
+        chuva: dadosChuva.erro ? { erro: dadosChuva.erro } : dadosChuva,
+        recomendacoes: topRecomendacoes, // ✅ ADICIONE A VÍRGULA AQUI
+        culturas_db: culturasDB,         // ✅ ADICIONE ESTA LINHA
+        metodo_busca: metodoDeBusca      // ✅ ADICIONE ESTA LINHA TAMBÉM
     });
 });
 
