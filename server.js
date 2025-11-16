@@ -215,7 +215,6 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) {
       for (const cidade in dadosArquivo) {
         const item = dadosArquivo[cidade];
         if (item.latitude == null || item.longitude == null) continue;
-.
         const dist = haversine(latitude, longitude, item.latitude, item.longitude);
         if (dist < menorDistancia) {
           menorDistancia = dist;
