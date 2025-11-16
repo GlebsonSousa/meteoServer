@@ -1,237 +1,754 @@
 {
   "Soja (Safra)": {
     "categoria": "Grãos e Oleaginosas",
-    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1200, 2500 ], 
-    "argila_range_percent": [ 20, 60 ], "mo_range_percent": [ 2.0, 5.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [6.0, 7.0],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1200, 2500],
+    "argila_range_percent": [20, 60],
+    "mo_range_percent": [2.0, 5.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "A soja é uma das principais culturas do agronegócio brasileiro, sendo fonte de proteína vegetal e óleo. Adapta-se bem a solos argilosos e requer boa disponibilidade hídrica durante floração e enchimento de grãos.",
+    "requisitos": [
+      "Solo profundo e bem estruturado para desenvolvimento radicular",
+      "pH entre 6.0 e 7.0 - fundamental para fixação biológica de nitrogênio",
+      "Precipitação de 1200-2500mm bem distribuída durante o ciclo",
+      "Temperatura ideal entre 20-30°C, com dias longos para floração"
+    ]
   },
   "Milho (Safra)": {
     "categoria": "Grãos e Cereais",
-    "ph_range": [ 5.5, 6.8 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1000, 1800 ], 
-    "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.5, 6.8],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1000, 1800],
+    "argila_range_percent": [25, 50],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "O milho é altamente produtivo e versátil, usado na alimentação humana, animal e produção de biocombustíveis. Responde muito bem à adubação nitrogenada e requer água adequada no florescimento.",
+    "requisitos": [
+      "Solo fértil e profundo, com boa capacidade de retenção de água",
+      "Alta demanda por nitrogênio, fósforo e potássio",
+      "Precipitação de 1000-1800mm, crítica no pendoamento e floração",
+      "Temperatura entre 18-30°C para desenvolvimento ideal"
+    ]
   },
   "Milho (Safrinha)": {
     "categoria": "Grãos e Cereais (2ª Safra)",
-    "ph_range": [ 5.5, 6.8 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 700, 1300 ], 
-    "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [5.5, 6.8],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [700, 1300],
+    "argila_range_percent": [25, 50],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Milho cultivado na segunda safra (outono/inverno), geralmente após a soja. Apresenta ciclo mais curto e menor disponibilidade hídrica, mas mantém boa produtividade com manejo adequado.",
+    "requisitos": [
+      "Semeadura imediata após colheita da safra principal",
+      "Solo com boa fertilidade residual ou adubação adequada",
+      "Precipitação mínima de 700mm durante o ciclo reduzido",
+      "Variedades precoces adaptadas ao período de estiagem"
+    ]
   },
   "Feijão (Safra)": {
     "categoria": "Leguminosas",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 700, 1300 ], 
-    "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [700, 1300],
+    "argila_range_percent": [20, 45],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "O feijão é cultura essencial na dieta brasileira, cultivado em três safras anuais. Apresenta ciclo curto e boa capacidade de fixação de nitrogênio através da simbiose com bactérias.",
+    "requisitos": [
+      "Solo bem drenado - não tolera encharcamento",
+      "pH entre 5.5 e 6.5 para melhor nodulação",
+      "Precipitação de 700-1300mm bem distribuída",
+      "Temperatura entre 18-24°C - sensível a geadas e calor extremo"
+    ]
   },
   "Algodão": {
     "categoria": "Fibras e Industrial",
-    "ph_range": [ 5.8, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1500 ], 
-    "argila_range_percent": [ 25, 45 ], "mo_range_percent": [ 1.5, 3.5 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.8, 7.0],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [800, 1500],
+    "argila_range_mm": [25, 45],
+    "mo_range_percent": [1.5, 3.5],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Cultura importante para produção de fibras têxteis e óleo. O algodoeiro brasileiro é competitivo mundialmente, exigindo alta tecnologia e solos férteis para máxima produtividade.",
+    "requisitos": [
+      "Solo profundo e bem drenado - raiz pivotante necessita penetração",
+      "Alta demanda nutricional, especialmente nitrogênio e potássio",
+      "Precipitação de 800-1500mm, com período seco na colheita",
+      "Temperatura entre 20-30°C durante todo o ciclo"
+    ]
   },
   "Arroz (Irrigado)": {
     "categoria": "Grãos e Cereais",
-    "ph_range": [ 5.0, 6.0 ], "drenagem_ideal": [ "Ruim ou Muito Ruim", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 1500, 3000 ], 
-    "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.0, 6.0],
+    "drenagem_ideal": ["Ruim ou Muito Ruim", "Deficiente / Imperfeita"],
+    "chuva_range_mm": [1500, 3000],
+    "argila_range_percent": [30, 60],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Arroz irrigado é cultivado em áreas alagadas, principalmente no Sul do Brasil. Sistema produtivo de alta tecnologia com rendimentos superiores ao arroz de sequeiro.",
+    "requisitos": [
+      "Solo com baixa permeabilidade para manter lâmina d'água",
+      "Sistema de irrigação por inundação controlada",
+      "Alta disponibilidade hídrica - 1500-3000mm durante ciclo",
+      "Tolerante a solos ácidos e condições de anaerobiose"
+    ]
   },
   "Arroz (Sequeiro)": {
     "categoria": "Grãos e Cereais",
-    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Moderada", "Boa" ], "chuva_range_mm": [ 1200, 1800 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Baixa", "Média" ]
+    "ph_range": [5.0, 6.5],
+    "drenagem_ideal": ["Moderada", "Boa"],
+    "chuva_range_mm": [1200, 1800],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Baixa", "Média"],
+    "descricao": "Arroz cultivado em terras altas sem irrigação, dependendo apenas das chuvas. Mais rústico que o irrigado, mas com produtividade menor. Comum em sistemas de rotação no Centro-Oeste.",
+    "requisitos": [
+      "Solo bem drenado - ao contrário do arroz irrigado",
+      "Precipitação regular de 1200-1800mm durante o ciclo",
+      "Tolerante a solos de fertilidade média a baixa",
+      "Variedades adaptadas ao déficit hídrico eventual"
+    ]
   },
   "Trigo": {
     "categoria": "Grãos e Cereais (Inverno)",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 700, 1200 ], 
-    "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [700, 1200],
+    "argila_range_percent": [30, 60],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Cereal de inverno cultivado principalmente na região Sul. Essencial para a panificação, o trigo brasileiro busca reduzir dependência de importações através de cultivares de alta qualidade.",
+    "requisitos": [
+      "Clima ameno - requer vernalização (frio) para floração",
+      "Solo argiloso e fértil, com boa estrutura",
+      "Precipitação de 700-1200mm bem distribuída no ciclo",
+      "Temperatura ideal entre 10-24°C"
+    ]
   },
   "Sorgo": {
     "categoria": "Grãos e Cereais",
-    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 400, 800 ], 
-    "argila_range_percent": [ 15, 50 ], "mo_range_percent": [ 1.0, 2.5 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [5.5, 7.0],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [400, 800],
+    "argila_range_percent": [15, 50],
+    "mo_range_percent": [1.0, 2.5],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Cereal altamente resistente à seca, usado na alimentação animal e produção de etanol. Excelente opção para regiões de baixa precipitação e solos menos férteis.",
+    "requisitos": [
+      "Alta tolerância ao déficit hídrico - sistema radicular profundo",
+      "Adapta-se a solos de baixa a média fertilidade",
+      "Precipitação mínima de 400mm durante o ciclo",
+      "Temperatura entre 20-30°C - tolera calor extremo"
+    ]
   },
   "Amendoim": {
     "categoria": "Grãos e Oleaginosas",
-    "ph_range": [ 5.8, 6.5 ], "drenagem_ideal": [ "Boa", "Acentuada a Excessiva" ], "chuva_range_mm": [ 700, 1300 ], 
-    "argila_range_percent": [ 10, 25 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [5.8, 6.5],
+    "drenagem_ideal": ["Boa", "Acentuada a Excessiva"],
+    "chuva_range_mm": [700, 1300],
+    "argila_range_percent": [10, 25],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Leguminosa oleaginosa que produz vagens subterrâneas. Importante para rotação de culturas, fixa nitrogênio e prefere solos arenosos bem drenados.",
+    "requisitos": [
+      "Solo leve e solto para facilitar penetração das vagens",
+      "Excelente drenagem - não tolera encharcamento",
+      "Precipitação de 700-1300mm, com período seco na maturação",
+      "Fixação biológica de nitrogênio reduz necessidade de adubação nitrogenada"
+    ]
   },
   "Girassol": {
     "categoria": "Grãos e Oleaginosas",
-    "ph_range": [ 6.0, 7.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 600, 1000 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [6.0, 7.5],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [600, 1000],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Oleaginosa de ciclo curto, produtora de óleo de alta qualidade. Tolerante à seca e útil na rotação de culturas, com sistema radicular profundo que melhora estrutura do solo.",
+    "requisitos": [
+      "Sistema radicular profundo - explora camadas mais profundas",
+      "Tolerante a déficit hídrico moderado",
+      "Precipitação de 600-1000mm durante o ciclo",
+      "pH próximo à neutralidade para melhor desenvolvimento"
+    ]
   },
   "Café Arábica": {
     "categoria": "Bebidas e Estimulantes",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa", "Acentuada a Excessiva" ], "chuva_range_mm": [ 1200, 1800 ], 
-    "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa", "Acentuada a Excessiva"],
+    "chuva_range_mm": [1200, 1800],
+    "argila_range_percent": [30, 60],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Café de alta qualidade, cultivado em altitudes elevadas (acima de 800m). Produz bebida de sabor superior, sendo a espécie mais valorizada comercialmente no mercado mundial.",
+    "requisitos": [
+      "Altitude entre 800-1400m para melhor qualidade sensorial",
+      "Solo profundo, bem drenado e rico em matéria orgânica",
+      "Precipitação de 1200-1800mm bem distribuída ao longo do ano",
+      "Temperatura média entre 18-22°C - sensível a geadas"
+    ]
   },
   "Café Conilon (Robusta)": {
     "categoria": "Bebidas e Estimulantes",
-    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1000, 1500 ], 
-    "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [5.0, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [1000, 1500],
+    "argila_range_percent": [25, 50],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Café cultivado em altitudes mais baixas e climas quentes. Mais rústico e produtivo que o arábica, com maior teor de cafeína, usado principalmente em blends e cafés solúveis.",
+    "requisitos": [
+      "Adapta-se a altitudes baixas (0-700m) e temperaturas mais altas",
+      "Maior resistência a pragas e doenças que o arábica",
+      "Precipitação de 1000-1500mm com estação seca definida",
+      "Temperatura média entre 22-26°C"
+    ]
   },
   "Cacau": {
     "categoria": "Bebidas e Estimulantes",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1800, 2500 ], 
-    "argila_range_percent": [ 30, 50 ], "mo_range_percent": [ 3.0, 6.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [1800, 2500],
+    "argila_range_percent": [30, 50],
+    "mo_range_percent": [3.0, 6.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Árvore tropical que produz amêndoas para fabricação de chocolate. Cultivada principalmente na Bahia, requer sombreamento, alta umidade e solos muito férteis e profundos.",
+    "requisitos": [
+      "Cultivo sob sombreamento (sistema agroflorestal cabruca)",
+      "Solo muito fértil e profundo, rico em matéria orgânica",
+      "Alta precipitação 1800-2500mm bem distribuída",
+      "Temperatura constante entre 24-28°C e alta umidade relativa"
+    ]
   },
   "Cana-de-açúcar": {
     "categoria": "Industrial (Energia)",
-    "ph_range": [ 5.5, 8.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1200, 2000 ], 
-    "argila_range_percent": [ 20, 60 ], "mo_range_percent": [ 1.5, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 8.0],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1200, 2000],
+    "argila_range_percent": [20, 60],
+    "mo_range_percent": [1.5, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Cultura semi-perene para produção de açúcar e etanol. Adapta-se a diversos tipos de solo e apresenta alta eficiência fotossintética, sendo estratégica para matriz energética brasileira.",
+    "requisitos": [
+      "Solo profundo para desenvolvimento do sistema radicular extenso",
+      "Ampla adaptação a diferentes condições de pH",
+      "Precipitação de 1200-2000mm, com período seco na maturação",
+      "Temperatura entre 20-30°C - cultura C4 de alta eficiência"
+    ]
   },
   "Laranja": {
     "categoria": "Frutas (Cítricos)",
-    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1200, 2000 ], 
-    "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.0, 6.5],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1200, 2000],
+    "argila_range_percent": [15, 35],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Brasil é maior produtor mundial de laranja e suco concentrado. Cultura perene exigente em tratos culturais, com ciclo produtivo de 20-30 anos em pomares comerciais.",
+    "requisitos": [
+      "Solo bem drenado - raízes sensíveis ao encharcamento",
+      "pH ligeiramente ácido ideal para absorção de nutrientes",
+      "Precipitação de 1200-2000mm bem distribuída ao longo do ano",
+      "Temperatura média entre 22-28°C, sem geadas"
+    ]
   },
   "Limão": {
     "categoria": "Frutas (Cítricos)",
-    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1000, 1800 ], 
-    "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 7.0],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1000, 1800],
+    "argila_range_percent": [15, 35],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Cítrico versátil usado tanto para consumo in natura quanto industrialização. Produção contínua ao longo do ano em condições tropicais favoráveis.",
+    "requisitos": [
+      "Solo bem estruturado e aerado",
+      "Boa drenagem essencial para saúde radicular",
+      "Precipitação de 1000-1800mm com distribuição regular",
+      "Temperatura entre 20-28°C para produção constante"
+    ]
   },
   "Banana": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1500, 2500 ], 
-    "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 3.0, 6.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [1500, 2500],
+    "argila_range_percent": [25, 50],
+    "mo_range_percent": [3.0, 6.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Fruta tropical de alto consumo popular no Brasil. Cultura altamente exigente em água e nutrientes, especialmente potássio, com produção contínua em regiões tropicais.",
+    "requisitos": [
+      "Solo muito fértil e rico em matéria orgânica",
+      "Alta demanda hídrica - 1500-2500mm bem distribuídos",
+      "Elevada necessidade de potássio para qualidade dos frutos",
+      "Temperatura constante entre 20-35°C, sem ventos fortes"
+    ]
   },
   "Uva (Vitis Vinifera)": {
     "categoria": "Frutas (Clima Temperado)",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Acentuada a Excessiva", "Boa" ], "chuva_range_mm": [ 800, 1200 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Acentuada a Excessiva", "Boa"],
+    "chuva_range_mm": [800, 1200],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Uva europeia para produção de vinhos finos e uvas de mesa premium. Exige inverno frio para quebra de dormência e período seco durante maturação dos frutos.",
+    "requisitos": [
+      "Inverno frio (abaixo 13°C) para quebra de dormência",
+      "Excelente drenagem - raízes não toleram umidade excessiva",
+      "Precipitação moderada, com período seco na colheita",
+      "Solo bem drenado, preferencialmente em encostas"
+    ]
   },
   "Mamão": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1200, 2000 ], 
-    "argila_range_percent": [ 15, 30 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [1200, 2000],
+    "argila_range_percent": [15, 30],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Fruta tropical de crescimento rápido e produção precoce. Altamente sensível ao encharcamento, com produção contínua durante todo o ano em regiões tropicais.",
+    "requisitos": [
+      "Drenagem perfeita - extremamente sensível a Phytophthora",
+      "Solo fértil e bem estruturado",
+      "Precipitação de 1200-2000mm bem distribuída",
+      "Temperatura entre 22-28°C constantemente"
+    ]
   },
   "Manga": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1000, 2500 ], 
-    "argila_range_percent": [ 15, 40 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 7.0],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [1000, 2500],
+    "argila_range_percent": [15, 40],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Árvore frutífera tropical de grande porte e longevidade. Adapta-se a diversas condições, mas produz melhor com período seco definido durante floração.",
+    "requisitos": [
+      "Árvore de grande porte - requer espaçamento adequado",
+      "Tolerante à seca após estabelecimento",
+      "Período seco favorece floração e frutificação",
+      "Temperatura entre 24-30°C para melhor produção"
+    ]
   },
   "Maracujá": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1700 ], 
-    "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [5.0, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [800, 1700],
+    "argila_range_percent": [20, 45],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Trepadeira tropical de ciclo curto (2-3 anos comerciais). Alta produtividade e rusticidade, mas exigente em manejo e fertilidade para produção comercial.",
+    "requisitos": [
+      "Sistema de condução em espaldeira obrigatório",
+      "Solo fértil e bem drenado",
+      "Precipitação de 800-1700mm durante ciclo produtivo",
+      "Renovação do pomar a cada 2-3 anos"
+    ]
   },
   "Abacaxi": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 4.5, 5.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1000, 1500 ], 
-    "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [4.5, 5.5],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1000, 1500],
+    "argila_range_percent": [10, 30],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Bromélia terrestre adaptada a solos ácidos e arenosos. Metabolismo CAM permite economia de água. Ciclo produtivo de 14-18 meses até primeira colheita.",
+    "requisitos": [
+      "Tolerante a solos ácidos (pH 4.5-5.5)",
+      "Solo arenoso bem drenado",
+      "Metabolismo CAM - econômico em água",
+      "Precipitação de 1000-1500mm durante o ciclo"
+    ]
   },
   "Açaí": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 4.5, 6.0 ], "drenagem_ideal": [ "Ruim ou Muito Ruim", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 2000, 3500 ], 
-    "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 3.0, 6.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [4.5, 6.0],
+    "drenagem_ideal": ["Ruim ou Muito Ruim", "Deficiente / Imperfeita"],
+    "chuva_range_mm": [2000, 3500],
+    "argila_range_percent": [30, 60],
+    "mo_range_percent": [3.0, 6.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Palmeira nativa da Amazônia adaptada a solos de várzea e igapó. Frutos ricos em antioxidantes, com crescente demanda nacional e internacional.",
+    "requisitos": [
+      "Adaptado a áreas alagadas e solos hidromórficos",
+      "Altíssima demanda hídrica - acima de 2000mm anuais",
+      "Tolera encharcamento periódico",
+      "Temperatura média acima de 22°C e alta umidade"
+    ]
   },
   "Coco": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva" ], "chuva_range_mm": [ 1500, 2500 ], 
-    "argila_range_percent": [ 10, 40 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média" ]
+    "ph_range": [5.5, 7.0],
+    "drenagem_ideal": ["Boa", "Moderada", "Acentuada a Excessiva"],
+    "chuva_range_mm": [1500, 2500],
+    "argila_range_percent": [10, 40],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média"],
+    "descricao": "Palmeira litorânea adaptada a solos arenosos e salinidade moderada. Cultura de longo ciclo (6-8 anos até produção) e alta longevidade produtiva.",
+    "requisitos": [
+      "Tolerante a salinidade moderada - ideal para regiões litorâneas",
+      "Solo arenoso bem drenado",
+      "Alta demanda hídrica constante",
+      "Temperatura acima de 20°C e alta insolação"
+    ]
   },
   "Goiaba": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 5.0, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1000, 1800 ], 
-    "argila_range_percent": [ 20, 50 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.0, 7.0],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [1000, 1800],
+    "argila_range_percent": [20, 50],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Frutífera rústica de ampla adaptação climática. Rica em vitamina C, com produção contínua em regiões tropicais e subtropicais sem geadas severas.",
+    "requisitos": [
+      "Ampla adaptação a diferentes tipos de solo",
+      "Tolerante a déficit hídrico moderado",
+      "Precipitação de 1000-1800mm",
+      "Temperatura entre 15-30°C - sensível a geadas"
+    ]
   },
   "Abacate": {
     "categoria": "Frutas (Tropicais)",
-    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa", "Acentuada a Excessiva" ], "chuva_range_mm": [ 1200, 1800 ], 
-    "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [6.0, 7.0],
+    "drenagem_ideal": ["Boa", "Acentuada a Excessiva"],
+    "chuva_range_mm": [1200, 1800],
+    "argila_range_percent": [20, 45],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Árvore tropical de grande porte produtora de frutos ricos em gorduras saudáveis. Extremamente sensível ao encharcamento, com raízes superficiais delicadas.",
+    "requisitos": [
+      "Drenagem excelente - raízes muito sensíveis à asfixia",
+      "pH próximo à neutralidade",
+      "Solo profundo e fértil",
+      "Precipitação de 1200-1800mm bem distribuída"
+    ]
   },
   "Maçã": {
     "categoria": "Frutas (Clima Temperado)",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1200 ], 
-    "argila_range_percent": [ 25, 45 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [800, 1200],
+    "argila_range_percent": [25, 45],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Fruteira de clima temperado que requer frio invernal para quebra de dormência. Cultivada principalmente no Sul do Brasil em regiões de altitude.",
+    "requisitos": [
+      "Frio hibernal obrigatório (200-1000 horas abaixo de 7°C)",
+      "Solo profundo e bem estruturado",
+      "Precipitação de 800-1200mm",
+      "Altitude acima de 800m em regiões tropicais"
+    ]
   },
   "Pêssego": {
     "categoria": "Frutas (Clima Temperado)",
-    "ph_range": [ 5.8, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 700, 1100 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média" ]
+    "ph_range": [5.8, 6.8],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [700, 1100],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média"],
+    "descricao": "Fruteira de caroço que requer frio moderado. Sensível a doenças fúngicas em regiões muito úmidas. Ciclo produtivo de 10-15 anos comerciais.",
+    "requisitos": [
+      "Frio hibernal para quebra de dormência (150-400 horas)",
+      "Período seco durante maturação dos frutos",
+      "Solo bem drenado e aerado",
+      "Sensível a umidade excessiva - favorece doenças"
+    ]
   },
   "Mandioca": {
     "categoria": "Raízes e Tubérculos",
-    "ph_range": [ 4.5, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva" ], "chuva_range_mm": [ 700, 1500 ], 
-    "argila_range_percent": [ 10, 35 ], "mo_range_percent": [ 1.0, 2.5 ], "fertilidade": [ "Baixa", "Média" ]
+    "ph_range": [4.5, 6.5],
+    "drenagem_ideal": ["Boa", "Moderada", "Acentuada a Excessiva"],
+    "chuva_range_mm": [700, 1500],
+    "argila_range_percent": [10, 35],
+    "mo_range_percent": [1.0, 2.5],
+    "fertilidade": ["Baixa", "Média"],
+    "descricao": "Raiz tuberosa extremamente rústica e adaptável, base alimentar de milhões de pessoas. Tolera solos pobres, acidez elevada e períodos de seca, sendo cultura de subsistência e industrial.",
+    "requisitos": [
+      "Extremamente tolerante a solos ácidos e de baixa fertilidade",
+      "Não tolera encharcamento - raízes apodrecem",
+      "Precipitação de 700-1500mm, tolerante a períodos secos",
+      "Ciclo longo (10-18 meses) permite cultivo em diversas épocas"
+    ]
   },
   "Batata": {
     "categoria": "Raízes e Tubérculos",
-    "ph_range": [ 5.0, 6.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1000, 1500 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.0, 6.0],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1000, 1500],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Tubérculo de clima ameno, altamente produtivo e nutritivo. Cultura tecnificada que exige alto investimento, mas com retorno rápido (ciclo de 90-120 dias).",
+    "requisitos": [
+      "Solo solto e friável para desenvolvimento dos tubérculos",
+      "Alta fertilidade e boa disponibilidade de nutrientes",
+      "Precipitação de 1000-1500mm bem distribuída",
+      "Temperatura amena 15-20°C - não tolera calor excessivo"
+    ]
   },
   "Batata-Doce": {
     "categoria": "Raízes e Tubérculos",
-    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 750, 1250 ], 
-    "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [5.0, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [750, 1250],
+    "argila_range_percent": [10, 30],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Raiz tuberosa rústica e nutritiva, rica em carboidratos complexos e vitaminas. Adapta-se a solos arenosos e menos férteis, com ciclo produtivo de 4-5 meses.",
+    "requisitos": [
+      "Solo leve e solto para formação das raízes",
+      "Tolerante a solos de baixa a média fertilidade",
+      "Precipitação de 750-1250mm durante o ciclo",
+      "Temperatura entre 20-30°C para melhor produção"
+    ]
   },
   "Cebola": {
     "categoria": "Hortaliças (Bulbos)",
-    "ph_range": [ 6.0, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], 
-    "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [6.0, 6.8],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [600, 1000],
+    "argila_range_percent": [15, 35],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Hortaliça bulbosa exigente em fertilidade e fotoperíodo. Cultura tecnificada que requer variedades adaptadas ao comprimento do dia da região de cultivo.",
+    "requisitos": [
+      "Solo muito fértil e bem preparado",
+      "pH próximo à neutralidade para melhor absorção de nutrientes",
+      "Precipitação moderada 600-1000mm - excesso favorece doenças",
+      "Fotoperíodo específico para cada variedade (dias curtos ou longos)"
+    ]
   },
   "Alho": {
     "categoria": "Hortaliças (Bulbos)",
-    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [6.0, 7.0],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [600, 1000],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Bulbosa de alto valor comercial, exigente em clima e fertilidade. Requer vernalização (frio) para formação adequada dos bulbilhos e posterior bulbificação.",
+    "requisitos": [
+      "Solo muito fértil e bem estruturado",
+      "Vernalização obrigatória para variedades nobres",
+      "Precipitação moderada 600-1000mm",
+      "pH próximo à neutralidade e boa disponibilidade de enxofre"
+    ]
   },
   "Tomate (Indústria)": {
     "categoria": "Hortaliças (Frutos)",
-    "ph_range": [ 5.5, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1200 ], 
-    "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [5.5, 6.8],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [800, 1200],
+    "argila_range_percent": [20, 45],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Tomate rasteiro para processamento industrial (molhos, extratos). Cultivado em larga escala com alto nível tecnológico, colheita mecanizada e contratos com indústrias.",
+    "requisitos": [
+      "Solo muito fértil e bem preparado",
+      "Alta demanda nutricional, especialmente potássio",
+      "Precipitação controlada - excesso favorece doenças fúngicas",
+      "Temperatura entre 18-28°C para melhor frutificação"
+    ]
   },
   "Cenoura": {
     "categoria": "Hortaliças (Raízes)",
-    "ph_range": [ 6.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], 
-    "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [6.0, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [600, 1000],
+    "argila_range_percent": [10, 30],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Raiz tuberosa que requer solo profundo, solto e livre de impedimentos para formação de raízes retas e uniformes. Ciclo curto de 80-120 dias.",
+    "requisitos": [
+      "Solo profundo (30cm+), solto e sem pedras ou torrões",
+      "Boa drenagem - raízes deformam em solo compactado",
+      "Precipitação regular de 600-1000mm",
+      "Temperatura amena 15-20°C para melhor coloração"
+    ]
   },
   "Alface": {
     "categoria": "Hortaliças (Folhas)",
-    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], 
-    "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta" ]
+    "ph_range": [6.0, 7.0],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [600, 1000],
+    "argila_range_percent": [15, 35],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta"],
+    "descricao": "Hortaliça folhosa de ciclo curto (60-80 dias) e alto giro comercial. Exigente em fertilidade e água, sensível ao calor excessivo que induz pendoamento precoce.",
+    "requisitos": [
+      "Solo muito fértil e rico em matéria orgânica",
+      "Irrigação constante - sistema radicular superficial",
+      "pH próximo à neutralidade",
+      "Temperatura amena 15-20°C - calor excessivo prejudica qualidade"
+    ]
   },
   "Abóbora": {
     "categoria": "Hortaliças (Frutos)",
-    "ph_range": [ 5.5, 6.8 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 800, 1200 ], 
-    "argila_range_percent": [ 15, 40 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 6.8],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [800, 1200],
+    "argila_range_percent": [15, 40],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Cucurbitácea rústica e produtiva, com diversas variedades para consumo fresco e industrialização. Planta rasteira que requer espaçamento adequado.",
+    "requisitos": [
+      "Solo fértil e bem drenado",
+      "Espaçamento amplo - planta rasteira de grande porte",
+      "Precipitação de 800-1200mm durante o ciclo",
+      "Temperatura entre 20-30°C para melhor desenvolvimento"
+    ]
   },
   "Melancia": {
     "categoria": "Hortaliças (Frutos)",
-    "ph_range": [ 6.0, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 900 ], 
-    "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [6.0, 6.8],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [600, 900],
+    "argila_range_percent": [10, 30],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Cucurbitácea de frutos grandes e suculentos, adaptada a clima quente. Requer período seco durante maturação para concentração de açúcares e melhor qualidade.",
+    "requisitos": [
+      "Solo arenoso bem drenado",
+      "Período seco na maturação melhora qualidade dos frutos",
+      "Precipitação moderada 600-900mm",
+      "Temperatura entre 25-35°C - tolera calor intenso"
+    ]
   },
   "Eucalipto": {
     "categoria": "Silvicultura (Reflorestamento)",
-    "ph_range": [ 4.5, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva" ], "chuva_range_mm": [ 800, 2000 ], 
-    "argila_range_percent": [ 15, 50 ], "mo_range_percent": [ 1.0, 3.0 ], "fertilidade": [ "Baixa", "Média" ]
+    "ph_range": [4.5, 6.5],
+    "drenagem_ideal": ["Boa", "Moderada", "Acentuada a Excessiva"],
+    "chuva_range_mm": [800, 2000],
+    "argila_range_percent": [15, 50],
+    "mo_range_percent": [1.0, 3.0],
+    "fertilidade": ["Baixa", "Média"],
+    "descricao": "Árvore de crescimento rápido para produção de celulose, carvão e madeira. Adapta-se a diversos solos e climas, sendo base da silvicultura comercial brasileira.",
+    "requisitos": [
+      "Crescimento rápido em solos profundos",
+      "Tolerante a acidez e baixa fertilidade inicial",
+      "Precipitação de 800-2000mm anuais",
+      "Ciclo de corte 6-7 anos, com rebrota de tocos possível"
+    ]
   },
   "Pinus": {
     "categoria": "Silvicultura (Reflorestamento)",
-    "ph_range": [ 4.0, 5.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1200, 2000 ], 
-    "argila_range_percent": [ 15, 40 ], "mo_range_percent": [ 1.5, 3.5 ], "fertilidade": [ "Baixa" ]
+    "ph_range": [4.0, 5.5],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1200, 2000],
+    "argila_range_percent": [15, 40],
+    "mo_range_percent": [1.5, 3.5],
+    "fertilidade": ["Baixa"],
+    "descricao": "Conífera de clima subtropical cultivada principalmente no Sul do Brasil. Madeira de alta qualidade para construção, móveis e celulose de fibra longa.",
+    "requisitos": [
+      "Clima subtropical com inverno frio",
+      "Tolerante a solos ácidos e pobres",
+      "Precipitação de 1200-2000mm anuais",
+      "Ciclo de corte 15-25 anos para madeira de qualidade"
+    ]
   },
   "Seringueira (Borracha)": {
     "categoria": "Industrial (Látex)",
-    "ph_range": [ 4.5, 6.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1800, 3000 ], 
-    "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 1.5, 3.0 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [4.5, 6.0],
+    "drenagem_ideal": ["Boa", "Moderada"],
+    "chuva_range_mm": [1800, 3000],
+    "argila_range_percent": [30, 60],
+    "mo_range_percent": [1.5, 3.0],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Árvore tropical produtora de látex natural. Ciclo longo até início da sangria (6-7 anos), mas com produção contínua por 25-30 anos.",
+    "requisitos": [
+      "Alta demanda hídrica e temperatura constante acima de 22°C",
+      "Solo profundo e bem estruturado",
+      "Precipitação abundante 1800-3000mm bem distribuída",
+      "Período de imaturidade longo - investimento de longo prazo"
+    ]
   },
   "Dendê (Palma)": {
     "categoria": "Industrial (Óleo)",
-    "ph_range": [ 4.5, 6.5 ], "drenagem_ideal": [ "Ruim ou Muito Ruim", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 2000, 3000 ], 
-    "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Baixa" ]
+    "ph_range": [4.5, 6.5],
+    "drenagem_ideal": ["Ruim ou Muito Ruim", "Deficiente / Imperfeita"],
+    "chuva_range_mm": [2000, 3000],
+    "argila_range_percent": [25, 50],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Baixa"],
+    "descricao": "Palmeira oleaginosa de alta produtividade por hectare. Cultivada principalmente na Amazônia, produz óleo para alimentos, cosméticos e biodiesel.",
+    "requisitos": [
+      "Clima equatorial quente e úmido constantemente",
+      "Tolera encharcamento temporário",
+      "Altíssima precipitação 2000-3000mm anuais",
+      "Temperatura média acima de 24°C e alta umidade relativa"
+    ]
   },
   "Fumo (Tabaco)": {
     "categoria": "Industrial (Folhas)",
-    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1200 ], 
-    "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 1.5, 2.5 ], "fertilidade": [ "Média" ]
+    "ph_range": [5.5, 6.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [800, 1200],
+    "argila_range_percent": [15, 35],
+    "mo_range_percent": [1.5, 2.5],
+    "fertilidade": ["Média"],
+    "descricao": "Cultura tecnificada para produção de folhas destinadas à indústria do tabaco. Cultivado principalmente no Sul do Brasil com sistema integrado de produção.",
+    "requisitos": [
+      "Solo bem drenado e preparado",
+      "Manejo intensivo durante todo o ciclo",
+      "Precipitação de 800-1200mm durante crescimento vegetativo",
+      "Ciclo curto de 120-150 dias, colheita manual seletiva"
+    ]
   },
   "Pastagem (Brachiaria)": {
     "categoria": "Forrageiras (Pecuária)",
-    "ph_range": [ 4.5, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 700, 2000 ], 
-    "argila_range_percent": [ 15, 50 ], "mo_range_percent": [ 1.0, 3.0 ], "fertilidade": [ "Baixa", "Média" ]
+    "ph_range": [4.5, 7.0],
+    "drenagem_ideal": ["Boa", "Moderada", "Acentuada a Excessiva", "Deficiente / Imperfeita"],
+    "chuva_range_mm": [700, 2000],
+    "argila_range_percent": [15, 50],
+    "mo_range_percent": [1.0, 3.0],
+    "fertilidade": ["Baixa", "Média"],
+    "descricao": "Gramínea forrageira tropical altamente adaptável e rústica. Dominante em pastagens brasileiras, tolera ampla variação de condições de solo e clima.",
+    "requisitos": [
+      "Extrema adaptabilidade - tolera solos ácidos e pobres",
+      "Aceita desde solos bem drenados até mal drenados",
+      "Precipitação de 700-2000mm anuais",
+      "Alta tolerância a pragas e doenças"
+    ]
   },
   "Pastagem (Panicum)": {
     "categoria": "Forrageiras (Pecuária)",
-    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1800 ], 
-    "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ], "fertilidade": [ "Média", "Alta" ]
+    "ph_range": [5.5, 7.0],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [800, 1800],
+    "argila_range_percent": [25, 50],
+    "mo_range_percent": [2.0, 4.0],
+    "fertilidade": ["Média", "Alta"],
+    "descricao": "Gramínea forrageira de maior exigência em fertilidade que Brachiaria, mas com maior produtividade e valor nutricional. Ideal para sistemas intensivos.",
+    "requisitos": [
+      "Solo de média a alta fertilidade",
+      "Boa drenagem essencial",
+      "Precipitação de 800-1800mm bem distribuída",
+      "Manejo adequado com adubação de manutenção"
+    ]
   },
   "Alfafa": {
     "categoria": "Forrageiras (Pecuária)",
-    "ph_range": [ 6.5, 7.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 700, 1200 ], 
-    "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 2.5, 5.0 ], "fertilidade": [ "Alta", "Muito Alta" ]
+    "ph_range": [6.5, 7.5],
+    "drenagem_ideal": ["Boa"],
+    "chuva_range_mm": [700, 1200],
+    "argila_range_percent": [20, 40],
+    "mo_range_percent": [2.5, 5.0],
+    "fertilidade": ["Alta", "Muito Alta"],
+    "descricao": "Leguminosa forrageira de alta qualidade nutricional e produtividade. Exigente em fertilidade e pH, mas fixa nitrogênio e melhora estrutura do solo.",
+    "requisitos": [
+      "pH próximo à neutralidade - exigência crítica",
+      "Solo muito fértil e bem drenado",
+      "Sistema radicular profundo - melhora solo",
+      "Precipitação de 700-1200mm, tolerante a déficit moderado"
+    ]
   }
 }
