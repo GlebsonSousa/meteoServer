@@ -10,7 +10,7 @@ app.use(cors());
 
 // --- Carregamento dos Dados (Início) ---
 
-// 1. Carrega base de solo SIMPLES (por Estado, para a rota /chuva)
+// 1. Carrega base de solo SIMPLES (por Estado)
 const soloInfoPath = path.join(__dirname, 'solo_info.json');
 let soloInfo = {};
 try {
@@ -25,7 +25,7 @@ let geoJsonSolos;
 let geoJsonSolosCentroids; // Armazena os pontos centrais
 
 try {
-    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); // Nome do seu ficheiro
+    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); 
     if (fs.existsSync(soloGeoJsonPath)) {
         const soloData = fs.readFileSync(soloGeoJsonPath, 'utf8');
         geoJsonSolos = JSON.parse(soloData);
@@ -60,7 +60,7 @@ try {
 // 3. Carrega o DICIONÁRIO de propriedades (pH, Drenagem, etc.)
 let propriedadesSolos = {};
 try {
-    const propriedadesPath = path.join(__dirname, 'FertDrenPH.json'); // Nome do seu ficheiro
+    const propriedadesPath = path.join(__dirname, 'FertDrenPH.json'); 
     if (fs.existsSync(propriedadesPath)) {
         propriedadesSolos = JSON.parse(fs.readFileSync(propriedadesPath, 'utf8'));
         console.log("SUCESSO: 'FertDrenPH.json' (dicionário) carregado.");
@@ -140,9 +140,10 @@ async function buscarDadosPrecisosSolo(lat, lon) {
             const layer = properties.layers.find(l => l.name === propName);
             if (layer && layer.depths && layer.depths[0] && layer.depths[0].values && layer.depths[0].values.mean !== undefined) {
                 const mean = layer.depths[0].values.mean;
+                // A ISRIC armazena valores convertidos
                 if (propName === 'phh2o') return (mean / 10).toFixed(1); // pH
-                if (propName === 'ocd') return (mean / 1000).toFixed(2); // Converte g/kg*100 para %
-                if (propName === 'clay') return (mean / 100).toFixed(1); // Converte g/kg*10 para %
+                if (propName === 'ocd') return (mean / 100).toFixed(2);  // Matéria Orgânica (g/kg -> %)
+                if (propName === 'clay') return (mean / 10).toFixed(1); // Argila (g/kg -> %)
             }
             return null;
         };
@@ -158,7 +159,7 @@ async function buscarDadosPrecisosSolo(lat, lon) {
 }
 
 // Função para buscar dados de chuva (Refatorada DA SUA rota /chuva original)
-function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) { // <- soloInfoDb ADICIONADO
+function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) {
   const tolerancia = 0.0001;
   const pastaDados = __dirname;
   const arquivos = fs.readdirSync(pastaDados).filter(arquivo =>
@@ -212,6 +213,7 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) { 
       for (const cidade in dadosArquivo) {
         const item = dadosArquivo[cidade];
         if (item.latitude == null || item.longitude == null) continue;
+public:
         const dist = haversine(latitude, longitude, item.latitude, item.longitude);
         if (dist < menorDistancia) {
           menorDistancia = dist;
@@ -248,10 +250,10 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) { 
   });
   const chuvaTotalAnual = somaChuvaPorMes.reduce((acc, mes) => acc + mes.soma_mm, 0);
 
-  // ADICIONADO DE VOLTA: Busca o solo simples
+  // Busca o solo simples (para o clima)
   const dadosSolo = soloInfoDb[registro.estado] || null;
 
-  // Retorna o objeto de dados
+  // Retorna o objeto de dados completo
   return {
     cidade_proxima: registro.nome,
     latitude: registro.latitude,
@@ -260,7 +262,7 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) { 
     estado: registro.estado,
     soma_chuva_mensal: somaChuvaPorMes,
     chuva_total_anual_mm: chuvaTotalAnual,
-    solo: dadosSolo // ADICIONADO DE VOLTA
+    solo: dadosSolo // Retorna o solo simples, como o front-end antigo espera
   };
 }
 
@@ -352,19 +354,18 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
     const dadosLocaisSolo = {
         tipo_solo: tipoSoloNome,
         textura: soloEncontradoProps.DSC_TEXTUR || "-",
-        drenagem: propriedades.drenagem || "-",
+        drenagem: propriedades.drenagem || "Não informada",
         ph: propriedades.ph || 0, // 0 como padrão se indefinido
         fertilidade: propriedades.fertilidade || "Desconhecida",
-        _metodo_de_busca: metodoDeBusca
+is     _metodo_de_busca: metodoDeBusca
     };
 
-    // 5. [AÇÕES PARALELAS] Busca os dados de chuva (Síncrono) E os dados precisos da API (Assíncrono)
+    // 5. [AÇÕES PARALELAS] Busca Chuva (Local) e Solo Preciso (API)
     let dadosChuva = {};
     let dadosPrecisos = null;
 
     try {
         // A função buscarDadosChuva é síncrona (usa readFileSync)
-        // Passa o soloInfo para ela
         dadosChuva = buscarDadosChuva(latitude, longitude, null, null, soloInfo); 
 
         // A função buscarDadosPrecisosSolo é assíncrona (usa await axios)
@@ -375,7 +376,7 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
         console.error("Erro ao buscar dados externos (Chuva ou ISRIC):", error.message);
     }
     
-    // --- 6. LÓGICA DE RECOMENDAÇÃO (SCORING) ---
+    // --- 6. LÓGICA DE RECOMENDAÇÃO (SCORING) - O "CRUZAMENTO DE DADOS" ---
     const recomendacoes = [];
 
     // Cria o "Contexto Atual" com os melhores dados disponíveis
@@ -383,40 +384,62 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
         // Usa o pH preciso da API se ele existir, senão usa o pH genérico do dicionário
         ph: (dadosPrecisos && dadosPrecisos.ph_preciso) ? parseFloat(dadosPrecisos.ph_preciso) : parseFloat(dadosLocaisSolo.ph),
         drenagem: dadosLocaisSolo.drenagem,
+        // (A API ISRIC não tem 'fertilidade', usamos a do dicionário local)
         fertilidade: dadosLocaisSolo.fertilidade,
-        chuva_anual: (dadosChuva && dadosChuva.chuva_total_anual_mm) ? dadosChuva.chuva_total_anual_mm : 0
+        chuva_anual: (dadosChuva && dadosChuva.chuva_total_anual_mm) ? dadosChuva.chuva_total_anual_mm : 0,
+        // Dados precisos da API para pontuação avançada
+        argila: (dadosPrecisos && dadosPrecisos.argila_percent) ? parseFloat(dadosPrecisos.argila_percent) : 0,
+        mo: (dadosPrecisos && dadosPrecisos.materia_organica_percent) ? parseFloat(dadosPrecisos.materia_organica_percent) : 0
     };
 
     console.log("Dados Atuais para Scoring:", dadosAtuais);
 
-    if (dadosAtuais.chuva_anual > 0) { // Só faz recomendação se tiver dados de chuva
+    if (dadosAtuais.chuva_anual > 0 && culturasDB) { // Só faz recomendação se tiver chuva E a base de culturas
         for (const [nomeCultura, condicoes] of Object.entries(culturasDB)) {
             let score = 0;
 
-            // A. Pontuar pH (Vale 2 pontos)
-            if (dadosAtuais.ph >= condicoes.ph[0] && dadosAtuais.ph <= condicoes.ph[1]) {
+            // Verifica se a cultura tem as condições definidas
+            const c = condicoes; // Apelido
+            
+            // A. Pontuar pH (Peso 2)
+            if (c.ph_range && dadosAtuais.ph >= c.ph_range[0] && dadosAtuais.ph <= c.ph_range[1]) {
                 score += 2;
             }
 
-            // B. Pontuar Drenagem (Vale 2 pontos)
-            if (condicoes.drenagem.includes(dadosAtuais.drenagem)) {
-                score += 2;
-            }
-
-            // C. Pontuar Chuva (Vale 1 ponto)
-            if (dadosAtuais.chuva_anual >= condicoes.chuva_anual_mm[0] && dadosAtuais.chuva_anual <= condicoes.chuva_anual_mm[1]) {
+            // B. Pontuar Drenagem (Peso 1)
+            if (c.drenagem_ideal && c.drenagem_ideal.includes(dadosAtuais.drenagem)) {
                 score += 1;
             }
 
-            // D. Pontuar Fertilidade (Vale 1 ponto)
-            if (condicoes.fertilidade.includes(dadosAtuais.fertilidade)) {
+            // C. Pontuar Chuva (Peso 1)
+            if (c.chuva_range_mm && dadosAtuais.chuva_anual >= c.chuva_range_mm[0] && dadosAtuais.chuva_anual <= c.chuva_range_mm[1]) {
                 score += 1;
+            }
+
+            // D. Pontuar Argila (Peso 1) - Se a API tiver retornado
+            if (c.argila_range_percent && dadosAtuais.argila > 0) {
+                 if (dadosAtuais.argila >= c.argila_range_percent[0] && dadosAtuais.argila <= c.argila_range_percent[1]) {
+                    score += 1;
+                }
+            }
+            
+            // E. Pontuar Matéria Orgânica (Fertilidade) (Peso 2) - Se a API tiver retornado
+            if (c.mo_range_percent && dadosAtuais.mo > 0) {
+                 if (dadosAtuais.mo >= c.mo_range_percent[0] && dadosAtuais.mo <= c.mo_range_percent[1]) {
+                    score += 2;
+                }
+            }
+            // Fallback para 'fertilidade' genérica se a API falhar
+            else if (c.fertilidade && !c.mo_range_percent && dadosAtuais.mo === 0) {
+                 if (c.fertilidade.includes(dadosAtuais.fertilidade)) {
+                    score += 1; // Score menor por ser genérico
+                 }
             }
 
             recomendacoes.push({ 
                 nome: nomeCultura, 
                 score: score, 
-                categoria: condicoes.categoria || "N/A"
+                categoria: c.categoria || "N/A"
             });
         }
     }
