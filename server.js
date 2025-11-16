@@ -2,102 +2,53 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const turf = require('@turf/turf'); // Para análise geoespacial
+const axios = require('axios');   // Para chamar a API ISRIC
 
 const app = express();
 app.use(cors());
 
-// ✅ Carrega base de solo
+// --- Carregamento dos Dados (Início) ---
+
+// 1. Carrega base de solo SIMPLES (por Estado, para a rota /chuva)
 const soloInfoPath = path.join(__dirname, 'solo_info.json');
 let soloInfo = {};
 try {
-  soloInfo = JSON.parse(fs.readFileSync(soloInfoPath, 'utf8'));
+  soloInfo = JSON.parse(fs.readFileSync(soloInfoPath, 'utf8'));
+  console.log("SUCESSO: 'solo_info.json' carregado.");
 } catch (e) {
-  console.error('Erro ao carregar solo_info.json:', e);
+  console.error('Erro ao carregar solo_info.json:', e);
 }
 
-// Função para logar cidades não encontradas
-function logCidadeNaoEncontrada(nome, codigo_ibge) {
-  const caminhoLog = path.join(__dirname, 'log_cidades.json');
-  let logAtual = [];
-
-  try {
-    if (fs.existsSync(caminhoLog)) {
-      const conteudo = fs.readFileSync(caminhoLog, 'utf8');
-      logAtual = JSON.parse(conteudo);
-    }
-  } catch (erro) {
-    console.error('Erro ao ler arquivo log_cidades.json:', erro);
-  }
-
-  const jaRegistrado = logAtual.some(
-    item =>
-      (nome && item.nome && item.nome.toLowerCase() === nome.toLowerCase()) &&
-      (codigo_ibge && item.codigo_ibge === codigo_ibge)
-  );
-
-  if (!jaRegistrado) {
-    logAtual.push({ nome: nome || null, codigo_ibge: codigo_ibge || null, data: new Date().toISOString() });
-    try {
-      fs.writeFileSync(caminhoLog, JSON.stringify(logAtual, null, 2), 'utf8');
-    } catch (erro) {
-      console.error('Erro ao escrever arquivo log_cidades.json:', erro);
-    }
-  }
-}
-
-// Função para calcular distância entre 2 coordenadas (Haversine)
-function haversine(lat1, lon1, lat2, lon2) {
-  const toRad = angle => (Math.PI / 180) * angle;
-  const R = 6371; // Raio da Terra em km
-
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
-
-  return R * 2 * Math.asin(Math.sqrt(a));
-}
-
-
-// --- INÍCIO DA INTEGRAÇÃO DO MAPA DE SOLOS DETALHADO ---
-
-const turf = require('@turf/turf'); // <-- 1. CERTIFIQUE-SE QUE ADICIONA ISTO NO TOPO
-
-// --- [NOVO] Carregamento do Mapa de Solos Detalhado ---
-
-// 2. Carrega o mapa de solos (arquivo grande) UMA VEZ na inicialização
+// 2. Carrega o MAPA de solos (GeoJSON)
 let geoJsonSolos;
-let geoJsonSolosCentroids; // <-- VARIÁVEL NOVA
+let geoJsonSolosCentroids; // Armazena os pontos centrais
 
 try {
-    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json');
+    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); // Nome do seu ficheiro
     if (fs.existsSync(soloGeoJsonPath)) {
         const soloData = fs.readFileSync(soloGeoJsonPath, 'utf8');
         geoJsonSolos = JSON.parse(soloData);
         console.log("SUCESSO: Mapa de solos 'Solos_5000.json' carregado.");
-        // --- ADIÇÃO: Pré-calcula os centroides dos polígonos ---
+        
+        // Pré-calcula os centroides dos polígonos
         console.log("Calculando centroides dos polígonos de solo...");
         const centroids = geoJsonSolos.features.map(feature => {
-            // Evita erros se a geometria for inválida
             if (!feature.geometry || !feature.geometry.coordinates || feature.geometry.coordinates.length === 0) {
                 return null;
             }
             try {
                 const centro = turf.centroid(feature.geometry);
-                // Copia as propriedades (tipo de solo, etc.) do polígono para o seu ponto central
                 centro.properties = feature.properties;
                 return centro;
             } catch (centroidError) {
                 console.warn("Aviso: Falha ao calcular centroide de um polígono.", centroidError.message);
                 return null;
             }
-        }).filter(Boolean); // Filtra os nulos/inválidos
+        }).filter(Boolean); 
         
-        // Armazena a coleção de *pontos* (centroides) para busca rápida
         geoJsonSolosCentroids = turf.featureCollection(centroids);
-        console.log(`SUCESSO: ${geoJsonSolosCentroids.features.length} centroides de solo calculados e prontos.`);
-        // 
+        console.log(`SUCESSO: ${geoJsonSolosCentroids.features.length} centroides de solo calculados.`);
 
     } else {
         console.warn("AVISO: Arquivo 'Solos_5000.json' não encontrado. A rota /solo não funcionará.");
@@ -106,10 +57,10 @@ try {
     console.error('ERRO FATAL AO CARREGAR GeoJSON de solos:', e);
 }
 
-// 3. Carrega o dicionário de PROPRIEDADES de solo
+// 3. Carrega o DICIONÁRIO de propriedades (pH, Drenagem, etc.)
 let propriedadesSolos = {};
 try {
-    const propriedadesPath = path.join(__dirname, 'FertDrenPH.json');
+    const propriedadesPath = path.join(__dirname, 'FertDrenPH.json'); // Nome do seu ficheiro
     if (fs.existsSync(propriedadesPath)) {
         propriedadesSolos = JSON.parse(fs.readFileSync(propriedadesPath, 'utf8'));
         console.log("SUCESSO: 'FertDrenPH.json' (dicionário) carregado.");
@@ -120,277 +71,389 @@ try {
     console.warn('AVISO: Erro ao carregar FertDrenPH.json.', e);
 }
 
-// --- Rota /solo ---
+// 4. Carrega a BASE DE CONHECIMENTO de Culturas
+let culturasDB = {};
+try {
+    const culturasPath = path.join(__dirname, 'culturas_db.json');
+    if (fs.existsSync(culturasPath)) {
+        culturasDB = JSON.parse(fs.readFileSync(culturasPath, 'utf8'));
+        console.log("SUCESSO: 'culturas_db.json' (Cérebro) carregado.");
+    } else {
+        console.warn('AVISO: Não foi possível carregar o dicionário culturas_db.json.');
+    }
+} catch (e) {
+    console.warn('AVISO: Erro ao carregar culturas_db.json.', e);
+}
 
-app.get('/solo', (req, res) => {
-    // 3. Valide se o arquivo de solos foi carregado
-    console.log("Verificando disponibilidade dos dados de solos...");
-    if (!geoJsonSolos || !geoJsonSolosCentroids) { // <-- Verifique as duas variáveis
+// --- Fim do Carregamento dos Dados ---
+
+
+// --- Funções Auxiliares ---
+
+function logCidadeNaoEncontrada(nome, codigo_ibge) {
+  const caminhoLog = path.join(__dirname, 'log_cidades.json');
+  let logAtual = [];
+  try {
+    if (fs.existsSync(caminhoLog)) {
+      const conteudo = fs.readFileSync(caminhoLog, 'utf8');
+      logAtual = JSON.parse(conteudo);
+    }
+  } catch (erro) {
+    console.error('Erro ao ler arquivo log_cidades.json:', erro);
+  }
+  const jaRegistrado = logAtual.some(
+    item =>
+      (nome && item.nome && item.nome.toLowerCase() === nome.toLowerCase()) &&
+      (codigo_ibge && item.codigo_ibge === codigo_ibge)
+  );
+  if (!jaRegistrado) {
+    logAtual.push({ nome: nome || null, codigo_ibge: codigo_ibge || null, data: new Date().toISOString() });
+    try {
+      fs.writeFileSync(caminhoLog, JSON.stringify(logAtual, null, 2), 'utf8');
+    } catch (erro) {
+      console.error('Erro ao escrever arquivo log_cidades.json:', erro);
+    }
+  }
+}
+
+function haversine(lat1, lon1, lat2, lon2) {
+  const toRad = angle => (Math.PI / 180) * angle;
+  const R = 6371; // Raio da Terra em km
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.asin(Math.sqrt(a));
+}
+
+// Função para buscar dados precisos de pH, Matéria Orgânica e Argila da API ISRIC
+async function buscarDadosPrecisosSolo(lat, lon) {
+    const url = `https://rest.isric.org/soilgrids/v2.0/query?lon=${lon}&lat=${lat}&properties=phh2o,ocd,clay&depths=0-5cm&units=g/kg`;
+    try {
+        const response = await axios.get(url);
+        if (!response.data || !response.data.properties || !response.data.properties.layers) {
+            throw new Error("Resposta da API ISRIC incompleta.");
+        }
+        const properties = response.data.properties;
+        const getMean = (propName) => {
+            const layer = properties.layers.find(l => l.name === propName);
+            if (layer && layer.depths && layer.depths[0] && layer.depths[0].values && layer.depths[0].values.mean !== undefined) {
+                const mean = layer.depths[0].values.mean;
+                if (propName === 'phh2o') return (mean / 10).toFixed(1); // pH
+                if (propName === 'ocd') return (mean / 1000).toFixed(2); // Converte g/kg*100 para %
+                if (propName === 'clay') return (mean / 100).toFixed(1); // Converte g/kg*10 para %
+            }
+            return null;
+        };
+        return {
+            ph_preciso: getMean('phh2o'),
+            materia_organica_percent: getMean('ocd'),
+            argila_percent: getMean('clay')
+        };
+    } catch (error) {
+        console.warn(`AVISO: Falha ao buscar dados da API ISRIC SoilGrids: ${error.message}`);
+        return null; // Retorna null se a API falhar
+    }
+}
+
+// Função para buscar dados de chuva (Refatorada DA SUA rota /chuva original)
+function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) { // <- soloInfoDb ADICIONADO
+  const tolerancia = 0.0001;
+  const pastaDados = __dirname;
+  const arquivos = fs.readdirSync(pastaDados).filter(arquivo =>
+    arquivo.startsWith('chuva_parte_') && arquivo.endsWith('.json')
+  );
+  let registro = null;
+
+  // (Lógica de busca exata)
+  for (const nomeArquivo of arquivos) {
+    const caminho = path.join(pastaDados, nomeArquivo);
+    const conteudo = fs.readFileSync(caminho, 'utf8');
+    let dadosArquivo;
+    try { dadosArquivo = JSON.parse(conteudo); } catch (erro) { continue; }
+
+    if (codigo_ibge) {
+      for (const cidade in dadosArquivo) {
+        if (String(dadosArquivo[cidade].codigo_ibge) === String(codigo_ibge)) {
+          registro = { nome: cidade, ...dadosArquivo[cidade] }; break;
+        }
+      }
+      if (registro) break;
+    }
+    if (nome) {
+      for (const cidade in dadosArquivo) {
+        if (cidade.toLowerCase() === nome.toLowerCase()) {
+          registro = { nome: cidade, ...dadosArquivo[cidade] }; break;
+        }
+      }
+      if (registro) break;
+    }
+    if (latitude !== null && longitude !== null) {
+      for (const cidade in dadosArquivo) {
+        const item = dadosArquivo[cidade];
+        if (Math.abs(item.latitude - latitude) < tolerancia && Math.abs(item.longitude - longitude) < tolerancia) {
+          registro = { nome: cidade, ...item }; break;
+        }
+      }
+      if (registro) break;
+    }
+  }
+
+  // (Lógica de busca por proximidade - Haversine)
+  if (!registro && latitude !== null && longitude !== null) {
+    let cidadeMaisProxima = null;
+    let menorDistancia = Infinity;
+    for (const nomeArquivo of arquivos) {
+      const caminho = path.join(pastaDados, nomeArquivo);
+      const conteudo = fs.readFileSync(caminho, 'utf8');
+      let dadosArquivo;
+      try { dadosArquivo = JSON.parse(conteudo); } catch (erro) { continue; }
+      for (const cidade in dadosArquivo) {
+        const item = dadosArquivo[cidade];
+        if (item.latitude == null || item.longitude == null) continue;
+        const dist = haversine(latitude, longitude, item.latitude, item.longitude);
+        if (dist < menorDistancia) {
+          menorDistancia = dist;
+          cidadeMaisProxima = { nome: cidade, ...item };
+        }
+      }
+    }
+    if (cidadeMaisProxima) {
+      registro = cidadeMaisProxima;
+    }
+  }
+
+  if (!registro) {
+    logCidadeNaoEncontrada(nome, codigo_ibge);
+    return { erro: 'Cidade não encontrada nos arquivos de chuva' }; // Retorna objeto de erro
+  }
+
+  // Processamento dos dados de chuva
+  const dadosDiarios = registro.dados;
+  const somaPorMes = {};
+  for (const data in dadosDiarios) {
+    const valor = Number(dadosDiarios[data]);
+    if (isNaN(valor)) continue;
+    const mesAno = data.slice(0, 7);
+    somaPorMes[mesAno] = (somaPorMes[mesAno] || 0) + valor;
+  }
+  const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
+  const ultimos12Meses = mesesOrdenados.slice(0, 12).sort();
+  const meses = { 1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr", 5: "Mai", 6: "Jun", 7: "Jul", 8: "Ago", 9: "Set", 10: "Out", 11: "Nov", 12: "Dez" };
+  const somaChuvaPorMes = ultimos12Meses.map(mesAno => {
+    const soma = somaPorMes[mesAno];
+    const mesNum = Number(mesAno.slice(5, 7));
+    return { mes: mesNum, nome_mes: meses[mesNum] || mesAno, ano_mes: mesAno, soma_mm: Number(soma.toFixed(2)) };
+  });
+  const chuvaTotalAnual = somaChuvaPorMes.reduce((acc, mes) => acc + mes.soma_mm, 0);
+
+  // ADICIONADO DE VOLTA: Busca o solo simples
+  const dadosSolo = soloInfoDb[registro.estado] || null;
+
+  // Retorna o objeto de dados
+  return {
+    cidade_proxima: registro.nome,
+    latitude: registro.latitude,
+    longitude: registro.longitude,
+    codigo_ibge: registro.codigo_ibge,
+    estado: registro.estado,
+    soma_chuva_mensal: somaChuvaPorMes,
+    chuva_total_anual_mm: chuvaTotalAnual,
+    solo: dadosSolo // ADICIONADO DE VOLTA
+  };
+}
+
+// --- Fim das Funções Auxiliares ---
+
+
+// --- ROTAS DA APLICAÇÃO ---
+
+app.get('/', (req, res) => {
+  res.send({ mensagem: 'Servidor meteorológico ativo!' });
+});
+
+app.get('/tempo', (req, res) => {
+  res.json({
+    cidade: 'Rio de Janeiro',
+    temperatura: 28,
+    condição: 'Parcialmente nublado'
+  });
+});
+
+app.get('/estupefato', (req, res) => {
+  res.json({
+    cidade: 69,
+    temperatura: "Outro gato",
+    condição: 'Aquele que tem dição.',
+    pão: "sevenboys",
+    ano: 1800
+  });
+});
+
+
+// --- Rota /solo (A ROTA PRINCIPAL DE ANÁLISE) ---
+
+app.get('/solo', async (req, res) => { // Rota agora é ASYNC
+    
+    // 1. Valide se os arquivos essenciais foram carregados
+    console.log("Verificando disponibilidade dos dados de solos...");
+    if (!geoJsonSolos || !geoJsonSolosCentroids || !propriedadesSolos || !culturasDB) { 
         return res.status(503).json({ 
-            erro: 'Serviço de solos indisponível (arquivo de dados não carregado).' 
+            erro: 'Serviço de recomendação indisponível (arquivos de dados não carregados).' 
         });
     }
 
-    // 4. Obtenha e valide as coordenadas da query
+    // 2. Obtenha e valide as coordenadas da query
     const { lat, lon } = req.query;
     if (!lat || !lon) {
         return res.status(400).json({ erro: 'Parâmetros "lat" e "lon" são obrigatórios.' });
     }
-
     const latitude = parseFloat(lat);
     const longitude = parseFloat(lon);
-
     if (isNaN(latitude) || isNaN(longitude)) {
         return res.status(400).json({ erro: 'Valores de "lat" e "lon" inválidos.' });
     }
 
-    // 5. Crie o "ponto" de busca do Turf
+    // --- Início da Lógica de Análise ---
     const pontoClicado = turf.point([longitude, latitude]);
-    
-    let soloEncontrado = null;
-    let metodoDeBusca = "Não encontrado";
+    let soloEncontradoProps = null;
+    let metodoDeBusca = "Não encontrado";
 
-    // 6. TENTATIVA 1: Faça a busca "Ponto em Polígono"
+    // 3. [SÍNCRONO] Busca o solo local no GeoJSON
+    // TENTATIVA 1: Busca Exata
     for (const feature of geoJsonSolos.features) {
-        try {
-            if (turf.booleanPointInPolygon(pontoClicado, feature.geometry)) {
-                soloEncontrado = feature.properties; // Salva as propriedades
-                metodoDeBusca = "Busca Exata (Ponto em Polígono)";
-                break; // Encontrou! Para o loop.
-            }
-        } catch(e) {
-            // Ignora polígonos com geometria inválida
-        }
+        try {
+            if (turf.booleanPointInPolygon(pontoClicado, feature.geometry)) {
+                soloEncontradoProps = feature.properties;
+                metodoDeBusca = "Busca Exata";
+                break; 
+            }
+        } catch(e) {}
     }
 
-    // 7. TENTATIVA 2: Se não encontrou, busque o ponto mais próximo
-    if (!soloEncontrado) {
-        console.log("Aviso: Ponto fora dos polígonos. Buscando o centroide mais próximo...");
-        // 
-        // Usa os centroides pré-calculados para uma busca RÁPIDA
-        const pontoMaisProximo = turf.nearestPoint(pontoClicado, geoJsonSolosCentroids);
-        
-        if (pontoMaisProximo) {
-            soloEncontrado = pontoMaisProximo.properties; // Pega as propriedades do centroide
-            metodoDeBusca = "Busca por Proximidade (Centroide)";
-        }
+    // TENTATIVA 2: Busca por Proximidade
+    if (!soloEncontradoProps) {
+        console.log("Aviso: Ponto fora dos polígonos. Buscando o centroide mais próximo...");
+        const pontoMaisProximo = turf.nearestPoint(pontoClicado, geoJsonSolosCentroids);
+        if (pontoMaisProximo) {
+            soloEncontradoProps = pontoMaisProximo.properties; 
+            metodoDeBusca = "Busca por Proximidade";
+        }
     }
+    
+    if (!soloEncontradoProps) {
+        return res.status(404).json({ erro: 'Nenhum dado de solo local encontrado para esta coordenada.' });
+    }
 
-    // 8. Envie a resposta
-    if (soloEncontrado) {
-        
-        // --- INÍCIO DA LÓGICA DE JUNÇÃO ---
-        // Pega o nome do solo (ex: "Latossolo amarelo Distrófico")
-        const tipoSoloNome = soloEncontrado.DSC_COMPON; 
-        
-        // Busca esse nome no dicionário (propriedadesSolos) que carregamos
-        // 
-        const propriedades = propriedadesSolos[tipoSoloNome] || {}; 
-        
-        // Junta os dados do GeoJSON com os dados do dicionário
-        const dadosCompletos = {
-            tipo_solo: tipoSoloNome,
-            textura: soloEncontrado.DSC_TEXTUR || "-",
-            associacao_1: soloEncontrado.DSC_COMPO1 || "-",
-            associacao_2: soloEncontrado.DSC_COMPO2 || "-",
-            fonte: 'Mapa Pedológico (GeoJSON)',
-            
-            // Dados "Enriquecidos" do arquivo FertDrenPH.json
-            drenagem: propriedades.drenagem || "-",
-            ph: propriedades.ph || "-",
-            fertilidade: propriedades.fertilidade || "-",
+    // 4. [SÍNCRONO] Enriquece o solo local com o dicionário
+    const tipoSoloNome = soloEncontradoProps.DSC_COMPON; 
+    const propriedades = propriedadesSolos[tipoSoloNome] || {}; 
+    const dadosLocaisSolo = {
+        tipo_solo: tipoSoloNome,
+        textura: soloEncontradoProps.DSC_TEXTUR || "-",
+        drenagem: propriedades.drenagem || "-",
+        ph: propriedades.ph || 0, // 0 como padrão se indefinido
+        fertilidade: propriedades.fertilidade || "Desconhecida",
+        _metodo_de_busca: metodoDeBusca
+    };
 
-            _metodo_de_busca: metodoDeBusca
-        };
+    // 5. [AÇÕES PARALELAS] Busca os dados de chuva (Síncrono) E os dados precisos da API (Assíncrono)
+    let dadosChuva = {};
+    let dadosPrecisos = null;
 
-        return res.json(dadosCompletos);
-        // --- FIM DA LÓGICA DE JUNÇÃO ---
-        
-    } else {
-        // Se nem a busca exata nem a próxima funcionarem
-        return res.status(404).json({ erro: 'Nenhum dado de solo encontrado para esta coordenada.' });
-    }
-});
-
-// --- [O RESTO DO SEU CÓDIGO (ex: app.get('/chuva', ...), app.listen(...)) VEM DEPOIS] ---
-
-
-
-
-
-// Rota principal
-app.get('/', (req, res) => {
-  res.send({ mensagem: 'Servidor meteorológico ativo!' });
-});
-
-// Rota estática
-app.get('/tempo', (req, res) => {
-  res.json({
-    cidade: 'Rio de Janeiro',
-    temperatura: 28,
-    condição: 'Parcialmente nublado'
-  });
-});
-
-app.get('/estupefato', (req, res) => {
-  res.json({
-    cidade: 69,
-    temperatura: "Outro gato",
-    condição: 'Aquele que tem dição.',
-    pão: "sevenboys",
-    ano: 1800
-  });
-});
-
-
-// Rota /chuva com solo integrado
-app.get('/chuva', (req, res) => {
-  const { nome, lat, lon, codigo_ibge } = req.query;
-
-  const latitude = lat ? parseFloat(lat) : null;
-  const longitude = lon ? parseFloat(lon) : null;
-  const tolerancia = 0.0001;
-
-  const pastaDados = __dirname;
-  const arquivos = fs.readdirSync(pastaDados).filter(arquivo =>
-    arquivo.startsWith('chuva_parte_') && arquivo.endsWith('.json')
-  );
-
-  let registro = null;
-
-  for (const nomeArquivo of arquivos) {
-    const caminho = path.join(pastaDados, nomeArquivo);
-    const conteudo = fs.readFileSync(caminho, 'utf8');
-
-    let dadosArquivo;
     try {
-      dadosArquivo = JSON.parse(conteudo);
-    } catch (erro) {
-      console.error(`Erro ao parsear ${nomeArquivo}:`, erro);
-      continue;
+        // A função buscarDadosChuva é síncrona (usa readFileSync)
+        // Passa o soloInfo para ela
+        dadosChuva = buscarDadosChuva(latitude, longitude, null, null, soloInfo); 
+
+        // A função buscarDadosPrecisosSolo é assíncrona (usa await axios)
+        console.log("Buscando dados precisos da ISRIC API...");
+        dadosPrecisos = await buscarDadosPrecisosSolo(latitude, longitude);
+
+    } catch (error) {
+        console.error("Erro ao buscar dados externos (Chuva ou ISRIC):", error.message);
     }
+    
+    // --- 6. LÓGICA DE RECOMENDAÇÃO (SCORING) ---
+    const recomendacoes = [];
 
-    if (codigo_ibge) {
-      for (const cidade in dadosArquivo) {
-        if (String(dadosArquivo[cidade].codigo_ibge) === String(codigo_ibge)) {
-          registro = { nome: cidade, ...dadosArquivo[cidade] };
-          break;
-        }
-      }
-      if (registro) break;
-    }
-
-    if (nome) {
-      for (const cidade in dadosArquivo) {
-        if (cidade.toLowerCase() === nome.toLowerCase()) {
-          registro = { nome: cidade, ...dadosArquivo[cidade] };
-          break;
-        }
-      }
-      if (registro) break;
-    }
-
-    if (latitude !== null && longitude !== null) {
-      for (const cidade in dadosArquivo) {
-        const item = dadosArquivo[cidade];
-        if (
-          Math.abs(item.latitude - latitude) < tolerancia &&
-          Math.abs(item.longitude - longitude) < tolerancia
-        ) {
-          registro = { nome: cidade, ...item };
-          break;
-        }
-      }
-      if (registro) break;
-    }
-  }
-
-  if (!registro && latitude !== null && longitude !== null) {
-    let cidadeMaisProxima = null;
-    let menorDistancia = Infinity;
-
-    for (const nomeArquivo of arquivos) {
-      const caminho = path.join(pastaDados, nomeArquivo);
-      const conteudo = fs.readFileSync(caminho, 'utf8');
-
-      let dadosArquivo;
-      try {
-        dadosArquivo = JSON.parse(conteudo);
-      } catch (erro) {
-        continue;
-      }
-
-      for (const cidade in dadosArquivo) {
-        const item = dadosArquivo[cidade];
-        if (item.latitude == null || item.longitude == null) continue;
-
-        const dist = haversine(latitude, longitude, item.latitude, item.longitude);
-
-        if (dist < menorDistancia) {
-          menorDistancia = dist;
-          cidadeMaisProxima = { nome: cidade, ...item };
-        }
-      }
-    }
-
-    if (cidadeMaisProxima) {
-      registro = cidadeMaisProxima;
-    }
-  }
-
-  if (!registro) {
-    logCidadeNaoEncontrada(nome, codigo_ibge);
-    return res.status(404).json({ erro: 'Cidade não encontrada nos arquivos' });
-  }
-
-  const dadosDiarios = registro.dados;
-
-  const somaPorMes = {};
-  const contagemPorMes = {};
-
-  for (const data in dadosDiarios) {
-    const valor = Number(dadosDiarios[data]);
-    if (isNaN(valor)) continue;
-
-    const mesAno = data.slice(0, 7);
-
-    somaPorMes[mesAno] = (somaPorMes[mesAno] || 0) + valor;
-    contagemPorMes[mesAno] = (contagemPorMes[mesAno] || 0) + 1;
-  }
-
-  const mesesOrdenados = Object.keys(somaPorMes).sort((a, b) => b.localeCompare(a));
-  const ultimos12Meses = mesesOrdenados.slice(0, 12).sort();
-
-  const meses = {
-    1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr",
-    5: "Mai", 6: "Jun", 7: "Jul", 8: "Ago",
-    9: "Set", 10: "Out", 11: "Nov", 12: "Dez"
-  };
-
-  const somaChuvaPorMes = ultimos12Meses.map(mesAno => {
-    const soma = somaPorMes[mesAno];
-    const mesNum = Number(mesAno.slice(5, 7));
-
-    return {
-      mes: mesNum,
-      nome_mes: meses[mesNum] || mesAno,
-      ano_mes: mesAno,
-      soma_mm: Number(soma.toFixed(2))
+    // Cria o "Contexto Atual" com os melhores dados disponíveis
+    const dadosAtuais = {
+        // Usa o pH preciso da API se ele existir, senão usa o pH genérico do dicionário
+        ph: (dadosPrecisos && dadosPrecisos.ph_preciso) ? parseFloat(dadosPrecisos.ph_preciso) : parseFloat(dadosLocaisSolo.ph),
+        drenagem: dadosLocaisSolo.drenagem,
+        fertilidade: dadosLocaisSolo.fertilidade,
+        chuva_anual: (dadosChuva && dadosChuva.chuva_total_anual_mm) ? dadosChuva.chuva_total_anual_mm : 0
     };
-  });
 
-  return res.json({
-    cidade: registro.nome,
-    latitude: registro.latitude,
-    longitude: registro.longitude,
-    codigo_ibge: registro.codigo_ibge,
-    estado: registro.estado,
-    soma_chuva_mensal: somaChuvaPorMes,
-  });
+    console.log("Dados Atuais para Scoring:", dadosAtuais);
+
+    if (dadosAtuais.chuva_anual > 0) { // Só faz recomendação se tiver dados de chuva
+        for (const [nomeCultura, condicoes] of Object.entries(culturasDB)) {
+            let score = 0;
+
+            // A. Pontuar pH (Vale 2 pontos)
+            if (dadosAtuais.ph >= condicoes.ph[0] && dadosAtuais.ph <= condicoes.ph[1]) {
+                score += 2;
+            }
+
+            // B. Pontuar Drenagem (Vale 2 pontos)
+            if (condicoes.drenagem.includes(dadosAtuais.drenagem)) {
+                score += 2;
+            }
+
+            // C. Pontuar Chuva (Vale 1 ponto)
+            if (dadosAtuais.chuva_anual >= condicoes.chuva_anual_mm[0] && dadosAtuais.chuva_anual <= condicoes.chuva_anual_mm[1]) {
+                score += 1;
+            }
+
+            // D. Pontuar Fertilidade (Vale 1 ponto)
+            if (condicoes.fertilidade.includes(dadosAtuais.fertilidade)) {
+                score += 1;
+            }
+
+            recomendacoes.push({ 
+                nome: nomeCultura, 
+                score: score, 
+                categoria: condicoes.categoria || "N/A"
+            });
+        }
+    }
+
+    // Ordenar do melhor (maior score) para o pior
+    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 3);
+    
+    console.log("Top 3:", topRecomendacoes);
+
+    // 7. Envie a Resposta Completa
+    return res.json({
+        solo_local: dadosLocaisSolo,    // Dados do seu GeoJSON + Dicionário
+        solo_preciso: dadosPrecisos,   // Novos dados da API ISRIC
+        chuva: dadosChuva.erro ? { erro: dadosChuva.erro } : dadosChuva, // Dados de chuva (que agora contém o 'solo' simples)
+        recomendacoes: topRecomendacoes // Top 3 culturas
+    });
 });
 
-// Porta do servidor
+
+// --- Rota /chuva (Simples, apenas chama a função) ---
+app.get('/chuva', (req, res) => {
+  const { nome, lat, lon, codigo_ibge } = req.query;
+  const latitude = lat ? parseFloat(lat) : null;
+  const longitude = lon ? parseFloat(lon) : null;
+
+  // Chama a função de busca síncrona e passa o 'soloInfo'
+  const dadosChuva = buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfo);
+
+  if (dadosChuva.erro) {
+      return res.status(404).json({ erro: dadosChuva.erro });
+  } else {
+      return res.json(dadosChuva);
+  }
+});
+
+// --- Porta do servidor ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
