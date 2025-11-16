@@ -127,7 +127,8 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.asin(Math.sqrt(a));
 }
 
-// Função para buscar dados precisos de pH, Matéria Orgânica e Argila da API ISRIC (CORRIGIDA)
+// --- FUNÇÃO CORRIGIDA ---
+// Função para buscar dados precisos de pH, Matéria Orgânica e Argila da API ISRIC
 async function buscarDadosPrecisosSolo(lat, lon) {
     // CORRIGIDO: URL sem o &units=g/kg que causava o 404
     const url = `https://rest.isric.org/soilgrids/v2.0/query?lon=${lon}&lat=${lat}&properties=phh2o,ocd,clay&depths=0-5cm`;
@@ -214,6 +215,7 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) {
       for (const cidade in dadosArquivo) {
         const item = dadosArquivo[cidade];
         if (item.latitude == null || item.longitude == null) continue;
+.
         const dist = haversine(latitude, longitude, item.latitude, item.longitude);
         if (dist < menorDistancia) {
           menorDistancia = dist;
@@ -445,9 +447,9 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
     }
 
     // Ordenar do melhor (maior score) para o pior
-    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 4);
+    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 3);
     
-    console.log("Top 4:", topRecomendacoes);
+    console.log("Top 3:", topRecomendacoes);
 
     // 7. Envie a Resposta Completa
     return res.json({
