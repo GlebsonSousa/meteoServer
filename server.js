@@ -131,7 +131,7 @@ function haversine(lat1, lon1, lat2, lon2) {
 // Função para buscar dados precisos de pH, Matéria Orgânica e Argila da API ISRIC
 async function buscarDadosPrecisosSolo(lat, lon) {
     // CORRIGIDO: URL sem o &units=g/kg que causava o 404
-    const url = `https://rest.isric.org/soilgrids/v2.0/query?lon=${lon}&lat=${lat}&properties=phh2o,ocd,clay&depths=0-5cm`;
+    const url = `https://rest.isric.org/soilgrids/v2.0/properties/query?lon=${lon}&lat=${lat}&property=phh2o&property=ocd&property=clay&depth=0-5cm&value=mean`
     try {
         const response = await axios.get(url);
         if (!response.data || !response.data.properties || !response.data.properties.layers) {
