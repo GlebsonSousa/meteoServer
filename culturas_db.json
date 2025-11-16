@@ -1,0 +1,190 @@
+{
+  "Soja (Safra)": {
+    "categoria": "Grãos e Oleaginosas",
+    "ph_range": [ 6.0, 7.0 ], "chuva_range_mm": [ 1200, 2500 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 20, 60 ], "mo_range_percent": [ 2.0, 5.0 ]
+  },
+  "Milho (Safra)": {
+    "categoria": "Grãos e Cereais",
+    "ph_range": [ 5.5, 6.8 ], "chuva_range_mm": [ 1000, 1800 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Milho (Safrinha)": {
+    "categoria": "Grãos e Cereais (2ª Safra)",
+    "ph_range": [ 5.5, 6.8 ], "chuva_range_mm": [ 700, 1300 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Feijão (Safra)": {
+    "categoria": "Leguminosas",
+    "ph_range": [ 5.5, 6.5 ], "chuva_range_mm": [ 700, 1300 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Algodão": {
+    "categoria": "Fibras e Industrial",
+    "ph_range": [ 5.8, 7.0 ], "chuva_range_mm": [ 800, 1500 ], "drenagem_ideal": [ "Boa" ], "argila_range_percent": [ 25, 45 ], "mo_range_percent": [ 1.5, 3.5 ]
+  },
+  "Arroz (Irrigado)": {
+    "categoria": "Grãos e Cereais",
+    "ph_range": [ 5.0, 6.0 ], "chuva_range_mm": [ 1500, 3000 ], "drenagem_ideal": [ "Ruim ou Muito Ruim", "Deficiente / Imperfeita" ], "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Arroz (Sequeiro)": {
+    "categoria": "Grãos e Cereais",
+    "ph_range": [ 5.0, 6.5 ], "chuva_range_mm": [ 1200, 1800 ], "drenagem_ideal": [ "Moderada", "Boa" ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Trigo": {
+    "categoria": "Grãos e Cereais (Inverno)",
+    "ph_range": [ 5.5, 6.5 ], "chuva_range_mm": [ 700, 1200 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Sorgo": {
+    "categoria": "Grãos e Cereais",
+    "ph_range": [ 5.5, 7.0 ], "chuva_range_mm": [ 400, 800 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 15, 50 ], "mo_range_percent": [ 1.0, 2.5 ]
+  },
+  "Amendoim": {
+    "categoria": "Grãos e Oleaginosas",
+    "ph_range": [ 5.8, 6.5 ], "chuva_range_mm": [ 700, 1300 ], "drenagem_ideal": [ "Boa", "Acentuada a Excessiva" ], "argila_range_percent": [ 10, 25 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Girassol": {
+    "categoria": "Grãos e Oleaginosas",
+    "ph_range": [ 6.0, 7.5 ], "chuva_range_mm": [ 600, 1000 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Café Arábica": {
+    "categoria": "Bebidas e Estimulantes",
+    "ph_range": [ 5.5, 6.5 ], "chuva_range_mm": [ 1200, 1800 ], "drenagem_ideal": [ "Boa", "Acentuada a Excessiva" ], "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Café Conilon (Robusta)": {
+    "categoria": "Bebidas e Estimulantes",
+    "ph_range": [ 5.0, 6.5 ], "chuva_range_mm": [ 1000, 1500 ], "drenagem_ideal": [ "Boa" ], "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Cacau": {
+    "categoria": "Bebidas e Estimulantes",
+    "ph_range": [ 5.5, 6.5 ], "chuva_range_mm": [ 1800, 2500 ], "drenagem_ideal": [ "Boa" ], "argila_range_percent": [ 30, 50 ], "mo_range_percent": [ 3.0, 6.0 ]
+  },
+  "Cana-de-açúcar": {
+    "categoria": "Industrial (Energia)",
+    "ph_range": [ 5.5, 8.0 ], "chuva_range_mm": [ 1200, 2000 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 20, 60 ], "mo_range_percent": [ 1.5, 4.0 ]
+  },
+  "Laranja": {
+    "categoria": "Frutas (Cítricos)",
+    "ph_range": [ 5.0, 6.5 ], "chuva_range_mm": [ 1200, 2000 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Limão": {
+    "categoria": "Frutas (Cítricos)",
+    "ph_range": [ 5.5, 7.0 ], "chuva_range_mm": [ 1000, 1800 ], "drenagem_ideal": [ "Boa", "Moderada" ], "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Banana": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 5.5, 6.5 ], "chuva_range_mm": [ 1500, 2500 ], "drenagem_ideal": [ "Boa" ], "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 3.0, 6.0 ]
+  },
+  "Uva (Vitis Vinifera)": {
+    "categoria": "Frutas (Clima Temperado)",
+    "ph_range": [ 5.5, 6.5 ], "chuva_range_mm": [ 800, 1200 ], "drenagem_ideal": [ "Acentuada a Excessiva", "Boa" ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Mamão": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1200, 2000 ], "argila_range_percent": [ 15, 30 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Manga": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1000, 2500 ], "argila_range_percent": [ 15, 40 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Maracujá": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1700 ], "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Abacaxi": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 4.5, 5.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1000, 1500 ], "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Açaí": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 4.5, 6.0 ], "drenagem_ideal": [ "Ruim ou Muito Ruim", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 2000, 3500 ], "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 3.0, 6.0 ]
+  },
+  "Coco": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva" ], "chuva_range_mm": [ 1500, 2500 ], "argila_range_percent": [ 10, 40 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Goiaba": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 5.0, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 1000, 1800 ], "argila_range_percent": [ 20, 50 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Abacate": {
+    "categoria": "Frutas (Tropicais)",
+    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa", "Acentuada a Excessiva" ], "chuva_range_mm": [ 1200, 1800 ], "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Maçã": {
+    "categoria": "Frutas (Clima Temperado)",
+    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1200 ], "argila_range_percent": [ 25, 45 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Pêssego": {
+    "categoria": "Frutas (Clima Temperado)",
+    "ph_range": [ 5.8, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 700, 1100 ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Mandioca": {
+    "categoria": "Raízes e Tubérculos",
+    "ph_range": [ 4.5, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva" ], "chuva_range_mm": [ 700, 1500 ], "argila_range_percent": [ 10, 35 ], "mo_range_percent": [ 1.0, 2.5 ]
+  },
+  "Batata": {
+    "categoria": "Raízes e Tubérculos",
+    "ph_range": [ 5.0, 6.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1000, 1500 ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Batata-Doce": {
+    "categoria": "Raízes e Tubérculos",
+    "ph_range": [ 5.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 750, 1250 ], "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Cebola": {
+    "categoria": "Hortaliças (Bulbos)",
+    "ph_range": [ 6.0, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Alho": {
+    "categoria": "Hortaliças (Bulbos)",
+    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Tomate (Indústria)": {
+    "categoria": "Hortaliças (Frutos)",
+    "ph_range": [ 5.5, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1200 ], "argila_range_percent": [ 20, 45 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Cenoura": {
+    "categoria": "Hortaliças (Raízes)",
+    "ph_range": [ 6.0, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Alface": {
+    "categoria": "Hortaliças (Folhas)",
+    "ph_range": [ 6.0, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 1000 ], "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 2.5, 5.0 ]
+  },
+  "Abóbora": {
+    "categoria": "Hortaliças (Frutos)",
+    "ph_range": [ 5.5, 6.8 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 800, 1200 ], "argila_range_percent": [ 15, 40 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Melancia": {
+    "categoria": "Hortaliças (Frutos)",
+    "ph_range": [ 6.0, 6.8 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 600, 900 ], "argila_range_percent": [ 10, 30 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Eucalipto": {
+    "categoria": "Silvicultura (Reflorestamento)",
+    "ph_range": [ 4.5, 6.5 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva" ], "chuva_range_mm": [ 800, 2000 ], "argila_range_percent": [ 15, 50 ], "mo_range_percent": [ 1.0, 3.0 ]
+  },
+  "Pinus": {
+    "categoria": "Silvicultura (Reflorestamento)",
+    "ph_range": [ 4.0, 5.5 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1200, 2000 ], "argila_range_percent": [ 15, 40 ], "mo_range_percent": [ 1.5, 3.5 ]
+  },
+  "Seringueira (Borracha)": {
+    "categoria": "Industrial (Látex)",
+    "ph_range": [ 4.5, 6.0 ], "drenagem_ideal": [ "Boa", "Moderada" ], "chuva_range_mm": [ 1800, 3000 ], "argila_range_percent": [ 30, 60 ], "mo_range_percent": [ 1.5, 3.0 ]
+  },
+  "Dendê (Palma)": {
+    "categoria": "Industrial (Óleo)",
+    "ph_range": [ 4.5, 6.5 ], "drenagem_ideal": [ "Ruim ou Muito Ruim", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 2000, 3000 ], "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Fumo (Tabaco)": {
+    "categoria": "Industrial (Folhas)",
+    "ph_range": [ 5.5, 6.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1200 ], "argila_range_percent": [ 15, 35 ], "mo_range_percent": [ 1.5, 2.5 ]
+  },
+  "Pastagem (Brachiaria)": {
+    "categoria": "Forrageiras (Pecuária)",
+    "ph_range": [ 4.5, 7.0 ], "drenagem_ideal": [ "Boa", "Moderada", "Acentuada a Excessiva", "Deficiente / Imperfeita" ], "chuva_range_mm": [ 700, 2000 ], "argila_range_percent": [ 15, 50 ], "mo_range_percent": [ 1.0, 3.0 ]
+  },
+  "Pastagem (Panicum)": {
+    "categoria": "Forrageiras (Pecuária)",
+    "ph_range": [ 5.5, 7.0 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 800, 1800 ], "argila_range_percent": [ 25, 50 ], "mo_range_percent": [ 2.0, 4.0 ]
+  },
+  "Alfafa": {
+    "categoria": "Forrageiras (Pecuária)",
+    "ph_range": [ 6.5, 7.5 ], "drenagem_ideal": [ "Boa" ], "chuva_range_mm": [ 700, 1200 ], "argila_range_percent": [ 20, 40 ], "mo_range_percent": [ 2.5, 5.0 ]
+  }
+}
