@@ -25,7 +25,7 @@ let geoJsonSolos;
 let geoJsonSolosCentroids; // Armazena os pontos centrais
 
 try {
-    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); 
+    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); // Nome do seu ficheiro
     if (fs.existsSync(soloGeoJsonPath)) {
         const soloData = fs.readFileSync(soloGeoJsonPath, 'utf8');
         geoJsonSolos = JSON.parse(soloData);
@@ -213,7 +213,6 @@ function buscarDadosChuva(latitude, longitude, nome, codigo_ibge, soloInfoDb) {
       for (const cidade in dadosArquivo) {
         const item = dadosArquivo[cidade];
         if (item.latitude == null || item.longitude == null) continue;
-public:
         const dist = haversine(latitude, longitude, item.latitude, item.longitude);
         if (dist < menorDistancia) {
           menorDistancia = dist;
@@ -357,7 +356,7 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
         drenagem: propriedades.drenagem || "Não informada",
         ph: propriedades.ph || 0, // 0 como padrão se indefinido
         fertilidade: propriedades.fertilidade || "Desconhecida",
-is     _metodo_de_busca: metodoDeBusca
+        _metodo_de_busca: metodoDeBusca
     };
 
     // 5. [AÇÕES PARALELAS] Busca Chuva (Local) e Solo Preciso (API)
