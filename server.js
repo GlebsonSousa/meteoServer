@@ -444,9 +444,9 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
     }
 
     // Ordenar do melhor (maior score) para o pior
-    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 3);
+    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 4);
     
-    console.log("Top 3:", topRecomendacoes);
+    console.log("Top 4:", topRecomendacoes);
 
     // 7. Envie a Resposta Completa
     return res.json({
