@@ -25,7 +25,7 @@ let geoJsonSolos;
 let geoJsonSolosCentroids; // Armazena os pontos centrais
 
 try {
-    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); // Nome do seu ficheiro
+    const soloGeoJsonPath = path.join(__dirname, 'Solos_5000.json'); 
     if (fs.existsSync(soloGeoJsonPath)) {
         const soloData = fs.readFileSync(soloGeoJsonPath, 'utf8');
         geoJsonSolos = JSON.parse(soloData);
@@ -127,9 +127,10 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.asin(Math.sqrt(a));
 }
 
-// Função para buscar dados precisos de pH, Matéria Orgânica e Argila da API ISRIC
+// Função para buscar dados precisos de pH, Matéria Orgânica e Argila da API ISRIC (CORRIGIDA)
 async function buscarDadosPrecisosSolo(lat, lon) {
-    const url = `https://rest.isric.org/soilgrids/v2.0/query?lon=${lon}&lat=${lat}&properties=phh2o,ocd,clay&depths=0-5cm&units=g/kg`;
+    // CORRIGIDO: URL sem o &units=g/kg que causava o 404
+    const url = `https://rest.isric.org/soilgrids/v2.0/query?lon=${lon}&lat=${lat}&properties=phh2o,ocd,clay&depths=0-5cm`;
     try {
         const response = await axios.get(url);
         if (!response.data || !response.data.properties || !response.data.properties.layers) {
@@ -140,10 +141,10 @@ async function buscarDadosPrecisosSolo(lat, lon) {
             const layer = properties.layers.find(l => l.name === propName);
             if (layer && layer.depths && layer.depths[0] && layer.depths[0].values && layer.depths[0].values.mean !== undefined) {
                 const mean = layer.depths[0].values.mean;
-                // A ISRIC armazena valores convertidos
-                if (propName === 'phh2o') return (mean / 10).toFixed(1); // pH
+                // A API retorna unidades padrão
+                if (propName === 'phh2o') return (mean / 10).toFixed(1); // pH (vem como pH * 10)
                 if (propName === 'ocd') return (mean / 100).toFixed(2);  // Matéria Orgânica (g/kg -> %)
-                if (propName === 'clay') return (mean / 10).toFixed(1); // Argila (g/kg -> %)
+                if (propName === 'clay') return (mean / 100).toFixed(1); // Argila (g/kg -> %)
             }
             return null;
         };
@@ -384,7 +385,7 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
         ph: (dadosPrecisos && dadosPrecisos.ph_preciso) ? parseFloat(dadosPrecisos.ph_preciso) : parseFloat(dadosLocaisSolo.ph),
         drenagem: dadosLocaisSolo.drenagem,
         // (A API ISRIC não tem 'fertilidade', usamos a do dicionário local)
-        fertilidade: dadosLocaisSolo.fertilidade,
+        fertilidade_generica: dadosLocaisSolo.fertilidade,
         chuva_anual: (dadosChuva && dadosChuva.chuva_total_anual_mm) ? dadosChuva.chuva_total_anual_mm : 0,
         // Dados precisos da API para pontuação avançada
         argila: (dadosPrecisos && dadosPrecisos.argila_percent) ? parseFloat(dadosPrecisos.argila_percent) : 0,
@@ -396,8 +397,6 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
     if (dadosAtuais.chuva_anual > 0 && culturasDB) { // Só faz recomendação se tiver chuva E a base de culturas
         for (const [nomeCultura, condicoes] of Object.entries(culturasDB)) {
             let score = 0;
-
-            // Verifica se a cultura tem as condições definidas
             const c = condicoes; // Apelido
             
             // A. Pontuar pH (Peso 2)
@@ -422,17 +421,19 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
                 }
             }
             
-            // E. Pontuar Matéria Orgânica (Fertilidade) (Peso 2) - Se a API tiver retornado
+            // E. Pontuar Fertilidade (Peso 2) - LÓGICA DE FALLBACK CORRIGIDA
             if (c.mo_range_percent && dadosAtuais.mo > 0) {
+                // --- TENTATIVA 1: API PRECISA (ISRIC) ---
                  if (dadosAtuais.mo >= c.mo_range_percent[0] && dadosAtuais.mo <= c.mo_range_percent[1]) {
-                    score += 2;
+                    score += 2; // Pontuação máxima
                 }
-            }
-            // Fallback para 'fertilidade' genérica se a API falhar
-            else if (c.fertilidade && !c.mo_range_percent && dadosAtuais.mo === 0) {
-                 if (c.fertilidade.includes(dadosAtuais.fertilidade)) {
-                    score += 1; // Score menor por ser genérico
-                 }
+            } 
+            else if (c.fertilidade) {
+                // --- TENTATIVA 2: FALLBACK (DICIONÁRIO LOCAL) ---
+                // A API falhou (mo === 0) E a cultura tem um range genérico
+                if (c.fertilidade.includes(dadosAtuais.fertilidade_generica)) {
+                    score += 1; // Pontuação menor por ser genérico
+                }
             }
 
             recomendacoes.push({ 
@@ -444,9 +445,9 @@ app.get('/solo', async (req, res) => { // Rota agora é ASYNC
     }
 
     // Ordenar do melhor (maior score) para o pior
-    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 4);
+    const topRecomendacoes = recomendacoes.sort((a, b) => b.score - a.score).slice(0, 3);
     
-    console.log("Top 4:", topRecomendacoes);
+    console.log("Top 3:", topRecomendacoes);
 
     // 7. Envie a Resposta Completa
     return res.json({
