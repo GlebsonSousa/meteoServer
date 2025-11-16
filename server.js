@@ -109,15 +109,15 @@ try {
 // 3. Carrega o dicionário de PROPRIEDADES de solo
 let propriedadesSolos = {};
 try {
-    const propriedadesPath = path.join(__dirname, 'propriedades_solos.json');
+    const propriedadesPath = path.join(__dirname, 'FertDrenPH.json');
     if (fs.existsSync(propriedadesPath)) {
         propriedadesSolos = JSON.parse(fs.readFileSync(propriedadesPath, 'utf8'));
-        console.log("SUCESSO: 'propriedades_solos.json' (dicionário) carregado.");
+        console.log("SUCESSO: 'FertDrenPH.json' (dicionário) carregado.");
     } else {
-        console.warn('AVISO: Não foi possível carregar o dicionário propriedades_solos.json.');
+        console.warn('AVISO: Não foi possível carregar o dicionário FertDrenPH.json.');
     }
 } catch (e) {
-    console.warn('AVISO: Erro ao carregar propriedades_solos.json.', e);
+    console.warn('AVISO: Erro ao carregar FertDrenPH.json.', e);
 }
 
 // --- Rota /solo ---
@@ -195,7 +195,7 @@ app.get('/solo', (req, res) => {
             associacao_2: soloEncontrado.DSC_COMPO2 || "-",
             fonte: 'Mapa Pedológico (GeoJSON)',
             
-            // Dados "Enriquecidos" do arquivo propriedades_solos.json
+            // Dados "Enriquecidos" do arquivo FertDrenPH.json
             drenagem: propriedades.drenagem || "-",
             ph: propriedades.ph || "-",
             fertilidade: propriedades.fertilidade || "-",
